@@ -1,0 +1,42 @@
+---
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import EnquiryForm from "../components/EnquiryForm.astro";
+import { site } from "../data/site";
+const crumbs = [{ name: "Home", path: "/" }, { name: "Contact", path: "/contact-us/" }];
+---
+<Base
+  title="Contact SEO Booster: Discuss Your Project | SEO Booster"
+  description="Tell SEO Booster about your website, the service or package you are interested in and your goals. We reply with an honest view of whether we can help and what it would involve."
+  crumbs={crumbs}
+>
+  <section class="phero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <div class="grid">
+        <div>
+          <p class="eyebrow">Contact</p>
+          <h1>Discuss your project</h1>
+          <p class="lead">Tell us what you want to improve. You will get an honest view of whether we can help, which package or proposal fits, and what we would need from you.</p>
+          <ol class="next">
+            <li><strong>You send the form.</strong> It takes about two minutes.</li>
+            <li><strong>We review your site and goal</strong> and reply by email, with questions if we need them.</li>
+            <li><strong>You get a recommendation:</strong> a fixed-scope package, a written proposal, or a clear "not the right fit".</li>
+          </ol>
+          <p class="small muted">{site.currencyNote} Online payment is not available yet; packages are arranged after we have confirmed scope with you.</p>
+          {site.contact.publicEmail && <p>Prefer email? <a href={`mailto:${site.contact.publicEmail}`}>{site.contact.publicEmail}</a></p>}
+        </div>
+        <div class="card formcard"><EnquiryForm /></div>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .phero { padding-block: 32px var(--section); }
+  .grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(32px, 6vw, 88px); align-items: start; }
+  .next { margin: 32px 0; padding: 0; list-style: none; counter-reset: n; display: grid; gap: 16px; }
+  .next li { counter-increment: n; position: relative; padding-left: 48px; color: #2b3b54; }
+  .next li::before { content: counter(n); position: absolute; left: 0; top: -2px; width: 32px; height: 32px; border-radius: 50%; background: var(--lime); display: grid; place-items: center; font: 700 0.9rem/1 var(--font-head); color: var(--ink); }
+  .formcard { padding: clamp(24px, 3vw, 40px); }
+  @media (max-width: 960px) { .grid { grid-template-columns: 1fr; } }
+</style>

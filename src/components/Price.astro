@@ -1,0 +1,15 @@
+---
+import type { Package } from "../data/catalogue";
+interface Props { pkg: Package; size?: "sm" | "lg" }
+const { pkg, size = "sm" } = Astro.props;
+---
+<span class:list={["price", `price--${size}`]}>
+  <span class="price__amount">{pkg.displayPrice}</span>
+  <abbr class="price__cur" title="US dollars">USD</abbr>
+</span>
+<style>
+  .price { display: inline-flex; align-items: baseline; flex-wrap: wrap; gap: 6px; font-family: var(--font-head); font-weight: 700; color: var(--ink); }
+  .price--lg .price__amount { font-size: 1.75rem; letter-spacing: -0.02em; line-height: 1.1; }
+  .price--sm .price__amount { font-size: 1.0625rem; }
+  .price__cur { font: 600 0.72rem/1 var(--font-body); letter-spacing: 0.06em; color: var(--slate); text-decoration: none; border: 1px solid var(--border); border-radius: 4px; padding: 3px 5px; }
+</style>

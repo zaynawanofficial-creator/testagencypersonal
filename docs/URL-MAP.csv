@@ -1,0 +1,25 @@
+legacy_url,evidence,seo_value,proposed_action,target,status
+https://seobooster.uk/,search index (seen 28 Sep 2026),unknown,keep,/,proposed
+https://seobooster.uk/search-engine-optimization/,search index,unknown,redirect 301,/services/seo/,proposed - needs export/Search Console data
+https://seobooster.uk/digital-marketing-services/,search index,unknown,redirect 301,/services/digital-marketing/,proposed
+https://seobooster.uk/web-designing/,search index,unknown,redirect 301,/services/web-design-development/,proposed
+https://seobooster.uk/website-development/,search index,unknown,redirect 301,/services/web-design-development/,proposed
+https://seobooster.uk/facebook-marketing-services/,search index,unknown,redirect 301,/services/digital-marketing/,proposed
+https://seobooster.uk/instagram-marketing-services/,search index,unknown,redirect 301,/services/digital-marketing/,proposed
+https://seobooster.uk/email-marketing/,search index,unknown,redirect 301,/services/digital-marketing/#package-4,proposed
+https://seobooster.uk/contact-us/,search index,unknown,keep (same path),/contact-us/,proposed
+https://seobooster.uk/blog/,search index,unknown,decide with Insights plan,/ or /insights/,open
+https://seobooster.uk/terms-conditions/,search index,unknown,redirect 301 once terms page exists,/terms/,blocked by policy drafts
+https://seobooster.uk/refund-policy/,search index,unknown,redirect 301 once cancellation page exists,/terms/,blocked by policy drafts
+https://seobooster.uk/product-category/seo/,search index,unknown,redirect 301,/services/seo/,proposed
+https://seobooster.uk/product/advanced-seo-package/,search index,unknown,redirect 301,/services/seo/,proposed
+https://seobooster.uk/product/on-page-optimization-package/,search index,unknown,redirect 301,/services/seo/#package-11,proposed
+https://seobooster.uk/product/local-pro-plan/,search index,unknown,redirect 301,/services/seo/#package-13,proposed
+https://seobooster.uk/product/starter-digital-marketing-plan/,search index,unknown,redirect 301,/services/digital-marketing/,proposed
+https://seobooster.uk/product/elite-marketing-mastery-plan/,search index,unknown,redirect 301,/services/digital-marketing/,proposed
+https://seobooster.uk/product/social-starter-plan/,search index,unknown,redirect 301,/services/digital-marketing/,proposed
+https://seobooster.uk/product/professional-instagram-growth-plan/,search index,unknown,redirect 301,/services/digital-marketing/,proposed
+https://seobooster.uk/product/elite-facebook-marketing-mastery-plan/,search index,unknown,redirect 301,/services/digital-marketing/,proposed
+https://seobooster.uk/product/advanced-facebook-growth-plan/,search index,unknown,retire (410) - fake-engagement product outside catalogue,,proposed
+https://seobooster.uk/product/facebook-post-engagement-package/,search index,unknown,retire (410) - fake-engagement product outside catalogue,,proposed
+https://seobooster.uk/product/facebook-story-views-package/,search index,unknown,retire (410) - fake-engagement product outside catalogue,,proposed

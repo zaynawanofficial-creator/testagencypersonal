@@ -1,0 +1,26 @@
+{
+  "name": "seobooster-static",
+  "private": true,
+  "type": "module",
+  "version": "0.2.0",
+  "scripts": {
+    "dev": "astro dev",
+    "check:catalogue": "python3 scripts/verify-catalogue.py",
+    "build": "npm run check:catalogue && astro check && astro build && node scripts/write-htaccess.mjs dist preview && node scripts/check-output.mjs dist",
+    "preview": "astro preview --port 4321",
+    "release": "node scripts/release.mjs",
+    "test": "node tests/site.test.mjs"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/manrope": "^5.3.0",
+    "astro": "^7.3.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/node": "^26.6.3",
+    "axe-core": "^4.13.0",
+    "playwright": "^1.56.1",
+    "typescript": "^6.0.3"
+  }
+}

@@ -1,0 +1,55 @@
+---
+import { byId, packageAnchor } from "../data/catalogue";
+import ClassChip from "./ClassChip.astro";
+import Price from "./Price.astro";
+interface Props { ids: number[]; caption: string }
+const { ids, caption } = Astro.props;
+const rows = ids.map(byId);
+---
+<div class="cmp">
+  <table role="table">
+    <caption class="visually-hidden">{caption}</caption>
+    <thead role="rowgroup">
+      <tr role="row">
+        <th role="columnheader" scope="col">Package</th>
+        <th role="columnheader" scope="col">Type</th>
+        <th role="columnheader" scope="col">Price</th>
+        <th role="columnheader" scope="col">Best for</th>
+        <th role="columnheader" scope="col">Lead time</th>
+      </tr>
+    </thead>
+    <tbody role="rowgroup">
+      {rows.map((p) => (
+        <tr role="row">
+          <th role="rowheader" scope="row"><a href={`#${packageAnchor(p)}`}>{p.name}</a></th>
+          <td role="cell" data-label="Type"><ClassChip pkg={p} /></td>
+          <td role="cell" data-label="Price"><Price pkg={p} /></td>
+          <td role="cell" data-label="Best for">{p.clientFit}</td>
+          <td role="cell" data-label="Lead time">{p.leadTime}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+<style>
+  .cmp { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.97rem; }
+  th, td { text-align: left; vertical-align: top; padding: 16px 18px; border-top: 1px solid var(--border); }
+  thead th { border-top: 0; background: var(--paper); font: 600 0.8125rem/1.2 var(--font-body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+  tbody th { font: 600 1.02rem/1.35 var(--font-head); min-width: 12em; }
+  tbody th a { color: var(--ink); text-decoration-color: var(--border); }
+  tbody th a:hover { color: var(--blue); }
+  @media (min-width: 861px) { td:nth-child(3) :global(.price) { flex-wrap: nowrap; white-space: nowrap; } }
+  td:nth-child(4) { color: var(--slate); min-width: 16em; }
+  td:nth-child(5) { color: var(--slate); min-width: 8em; }
+  @media (max-width: 860px) {
+    .cmp { background: transparent; border: 0; border-radius: 0; overflow: visible; }
+    thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    table, tbody, tr, th, td { display: block; }
+    tr { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 6px 0; margin-bottom: 12px; }
+    th, td { border: 0; padding: 8px 18px; }
+    tbody th { min-width: 0; font-size: 1.1rem; padding-top: 12px; }
+    td { display: grid; grid-template-columns: 7.5em 1fr; gap: 12px; min-width: 0 !important; white-space: normal !important; }
+    td::before { content: attr(data-label); font-weight: 600; font-size: 0.875rem; color: var(--ink); }
+  }
+</style>

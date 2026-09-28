@@ -1,0 +1,161 @@
+---
+import Logo from "./Logo.astro";
+import { orderedFamilies } from "../data/families";
+import { site } from "../data/site";
+interface Props { current?: string }
+const { current = "" } = Astro.props;
+const isServices = current.startsWith("/services/");
+const links = [
+  { href: "/our-approach/", label: "Our Approach" },
+  { href: "/about/", label: "About" },
+  ...(site.insightsVisible ? [{ href: "/insights/", label: "Insights" }] : []),
+];
+---
+<header class="site-header" data-header>
+  <div class="wrap bar">
+    <Logo />
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="primary-nav" data-menu-btn>
+      <span class="menu-btn__icon" aria-hidden="true"><span></span></span>
+      <span data-menu-label>Menu</span>
+    </button>
+    <nav class="nav" id="primary-nav" aria-label="Primary" data-nav>
+      <ul class="nav__list">
+        <li><a class="nav__link" href="/" aria-current={current === "/" ? "page" : undefined}>Home</a></li>
+        <li class="nav__item">
+          <button class:list={["nav__link", "nav__toggle", { "is-active": isServices }]} type="button" aria-expanded="false" aria-controls="services-panel" data-disclosure>
+            Services
+            <svg class="chev" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="panel" id="services-panel" hidden>
+            <ul class="panel__list">
+              {orderedFamilies.map((f) => (
+                <li>
+                  <a href={`/services/${f.slug}/`} aria-current={current === `/services/${f.slug}/` ? "page" : undefined}>
+                    <strong>{f.navLabel}</strong>
+                    <span>{f.summary}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a class="panel__all link-arrow" href="/services/">All services and how pricing works</a>
+          </div>
+        </li>
+        {links.map((l) => (
+          <li><a class="nav__link" href={l.href} aria-current={current === l.href ? "page" : undefined}>{l.label}</a></li>
+        ))}
+      </ul>
+      <a class="btn btn--primary btn--sm nav__cta" href="/contact-us/">Discuss your project</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>("[data-header]")!;
+  const nav = document.querySelector<HTMLElement>("[data-nav]")!;
+  const menuBtn = document.querySelector<HTMLButtonElement>("[data-menu-btn]")!;
+  const label = document.querySelector<HTMLElement>("[data-menu-label]")!;
+  const toggles = [...document.querySelectorAll<HTMLButtonElement>("[data-disclosure]")];
+  const mobile = window.matchMedia("(max-width: 1023px)");
+
+  const panelOf = (b: HTMLButtonElement) => document.getElementById(b.getAttribute("aria-controls")!)!;
+  const setDisclosure = (b: HTMLButtonElement, open: boolean) => { b.setAttribute("aria-expanded", String(open)); panelOf(b).hidden = !open; };
+  const closeDisclosures = (except?: HTMLButtonElement) => toggles.forEach((t) => t !== except && setDisclosure(t, false));
+
+  function setMenu(open: boolean, returnFocus = false) {
+    menuBtn.setAttribute("aria-expanded", String(open));
+    label.textContent = open ? "Close" : "Menu";
+    // Measure at open time: the drawer starts exactly at the header's bottom edge, whatever the scroll position.
+    nav.style.setProperty("--drawer-top", `${Math.round(header.getBoundingClientRect().bottom)}px`);
+    nav.classList.toggle("is-open", open);
+    document.documentElement.classList.toggle("menu-open", open);
+    if (!open) closeDisclosures();
+    if (open) nav.querySelector<HTMLElement>("a, button")?.focus();
+    if (!open && returnFocus) menuBtn.focus();
+  }
+
+  menuBtn.addEventListener("click", () => setMenu(menuBtn.getAttribute("aria-expanded") !== "true"));
+  toggles.forEach((b) => b.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const open = b.getAttribute("aria-expanded") !== "true";
+    closeDisclosures(b);
+    setDisclosure(b, open);
+  }));
+  document.addEventListener("click", (e) => {
+    if (!mobile.matches && !(e.target as Element).closest(".nav__item")) closeDisclosures();
+  });
+  document.querySelectorAll<HTMLElement>(".nav__item").forEach((item) => item.addEventListener("focusout", (e) => {
+    if (!mobile.matches && !item.contains(e.relatedTarget as Node)) closeDisclosures();
+  }));
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    const open = toggles.find((t) => t.getAttribute("aria-expanded") === "true");
+    if (open && !mobile.matches) { setDisclosure(open, false); open.focus(); }
+    else if (menuBtn.getAttribute("aria-expanded") === "true") setMenu(false, true);
+  });
+  // Keep keyboard focus inside the open drawer.
+  nav.addEventListener("keydown", (e) => {
+    if (e.key !== "Tab" || !mobile.matches || !nav.classList.contains("is-open")) return;
+    const f = [menuBtn, ...nav.querySelectorAll<HTMLElement>("a[href], button:not([disabled])")].filter((el) => el.offsetParent !== null);
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+  menuBtn.addEventListener("keydown", (e) => {
+    if (e.key === "Tab" && e.shiftKey && nav.classList.contains("is-open")) {
+      e.preventDefault();
+      const f = [...nav.querySelectorAll<HTMLElement>("a[href], button:not([disabled])")].filter((el) => el.offsetParent !== null);
+      f[f.length - 1]?.focus();
+    }
+  });
+  mobile.addEventListener("change", () => { setMenu(false); closeDisclosures(); });
+  window.addEventListener("scroll", () => header.classList.toggle("is-scrolled", window.scrollY > 4), { passive: true });
+</script>
+
+<style>
+  /* No transform/filter on the header: those would become the containing block for the fixed mobile drawer. */
+  .site-header { position: sticky; top: 0; z-index: 50; background: var(--white); border-bottom: 1px solid var(--border); transition: box-shadow .2s ease; }
+  .site-header.is-scrolled { box-shadow: 0 6px 20px rgb(21 37 65 / 0.07); }
+  .bar { display: flex; align-items: center; gap: 24px; min-height: var(--header-h); }
+  .nav { margin-left: auto; display: flex; align-items: center; gap: 20px; }
+  .nav__list { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 4px; }
+  .nav__link { position: relative; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 14px; border: 0; background: none; border-radius: 999px; color: var(--ink); font: 500 1rem/1 var(--font-body); text-decoration: none; cursor: pointer; white-space: nowrap; -webkit-tap-highlight-color: transparent; }
+  .nav__link:hover { background: var(--paper); color: var(--ink); text-decoration: none; }
+  .nav__link[aria-current="page"], .nav__link.is-active { font-weight: 600; }
+  .nav__link[aria-current="page"]::after, .nav__link.is-active::after { content: ""; position: absolute; left: 14px; right: 14px; bottom: 4px; height: 3px; border-radius: 2px; background: var(--lime); }
+  .chev { width: 12px; height: 12px; flex: none; transition: transform .15s ease; }
+  .nav__toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
+  .nav__item { position: relative; }
+  .panel { position: absolute; top: calc(100% + 14px); left: 50%; translate: -50% 0; width: min(640px, calc(100vw - 48px)); background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 12px; }
+  .panel[hidden] { display: none; }
+  .panel__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .panel__list a { display: block; padding: 12px 14px; border-radius: var(--radius-sm); text-decoration: none; color: var(--ink); }
+  .panel__list a:hover { background: var(--paper); }
+  .panel__list a[aria-current="page"] { background: var(--blue-soft); }
+  .panel__list strong { display: block; font: 600 1rem/1.3 var(--font-head); }
+  .panel__list span { display: block; margin-top: 3px; font-size: 0.875rem; line-height: 1.4; color: var(--slate); }
+  .panel__all { display: flex; margin: 8px 14px 6px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 0.95rem; }
+  .menu-btn { display: none; margin-left: auto; align-items: center; gap: 10px; min-height: 44px; padding: 8px 16px; border: 1.5px solid var(--border); border-radius: 999px; background: var(--white); color: var(--ink); font: 600 0.95rem/1 var(--font-body); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .menu-btn__icon { position: relative; width: 18px; height: 12px; }
+  .menu-btn__icon::before, .menu-btn__icon::after, .menu-btn__icon span { content: ""; position: absolute; left: 0; width: 18px; height: 2px; border-radius: 1px; background: currentColor; transition: transform .2s ease, opacity .2s ease; }
+  .menu-btn__icon::before { top: 0; } .menu-btn__icon span { top: 5px; } .menu-btn__icon::after { top: 10px; }
+  .menu-btn[aria-expanded="true"] .menu-btn__icon::before { transform: translateY(5px) rotate(45deg); }
+  .menu-btn[aria-expanded="true"] .menu-btn__icon span { opacity: 0; }
+  .menu-btn[aria-expanded="true"] .menu-btn__icon::after { transform: translateY(-5px) rotate(-45deg); }
+
+  @media (max-width: 1023px) {
+    .menu-btn { display: inline-flex; }
+    .nav { display: none; position: fixed; top: var(--drawer-top, var(--header-h)); left: 0; right: 0; bottom: 0; margin: 0; padding: 8px var(--gutter) 32px; background: var(--white); overflow-y: auto; overscroll-behavior: contain; flex-direction: column; align-items: stretch; gap: 16px; border-top: 1px solid var(--border); }
+    .nav.is-open { display: flex; }
+    .nav__list { flex-direction: column; align-items: stretch; gap: 0; }
+    .nav__list > li { border-bottom: 1px solid var(--border); }
+    .nav__link { width: 100%; justify-content: space-between; min-height: 56px; padding: 8px 4px; border-radius: 0; font-size: 1.0625rem; }
+    .nav__link:hover { background: none; }
+    .nav__link[aria-current="page"]::after, .nav__link.is-active::after { left: 4px; right: auto; width: 28px; bottom: 8px; }
+    .panel { position: static; translate: none; width: auto; border: 0; box-shadow: none; padding: 0 0 12px; }
+    .panel__list { grid-template-columns: 1fr; }
+    .panel__list a { padding: 10px 12px; }
+    .panel__all { margin: 4px 12px 0; }
+    .nav__cta { width: 100%; min-height: 52px; }
+    :global(html.menu-open) { overflow: hidden; }
+  }
+</style>

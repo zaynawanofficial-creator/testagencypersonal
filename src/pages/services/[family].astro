@@ -1,0 +1,218 @@
+---
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import PackageComparison from "../../components/PackageComparison.astro";
+import PackageDetails from "../../components/PackageDetails.astro";
+import Process from "../../components/Process.astro";
+import Faq from "../../components/Faq.astro";
+import Price from "../../components/Price.astro";
+import { byFamily, byId, packageAnchor } from "../../data/catalogue";
+import { families, familyBySlug, type Family } from "../../data/families";
+import { site } from "../../data/site";
+
+export function getStaticPaths() {
+  // Build-time integrity check: every catalogue package appears in exactly one group of its family.
+  for (const f of families) {
+    const grouped = f.groups.flatMap((g) => g.ids).sort((a, b) => a - b);
+    const actual = byFamily(f.name).map((p) => p.id).sort((a, b) => a - b);
+    if (JSON.stringify(grouped) !== JSON.stringify(actual)) throw new Error(`Package grouping mismatch for ${f.name}: ${grouped} vs ${actual}`);
+  }
+  return families.map((f) => ({ params: { family: f.slug }, props: { f } }));
+}
+interface Props { f: Family }
+const { f } = Astro.props;
+const pkgs = byFamily(f.name);
+const crumbs = [
+  { name: "Home", path: "/" },
+  { name: "Services", path: "/services/" },
+  { name: f.navLabel, path: `/services/${f.slug}/` },
+];
+const counts = {
+  fixed: pkgs.filter((p) => p.classification === "Fixed-scope one-time").length,
+  proposal: pkgs.filter((p) => p.classification === "Quote-led bespoke").length,
+  monthly: pkgs.filter((p) => p.classification === "Ongoing engagement").length,
+};
+const countText = [
+  counts.fixed && `${counts.fixed} fixed-scope`,
+  counts.proposal && `${counts.proposal} by proposal`,
+  counts.monthly && `${counts.monthly} monthly`,
+].filter(Boolean).join(", ");
+const related = f.related.map((s) => familyBySlug(s)!);
+---
+<Base title={f.title} description={f.description} crumbs={crumbs}>
+  <section class="phero" aria-labelledby="page-h">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <div class="phero__grid">
+        <div>
+          <p class="eyebrow">{f.name === "SEO" ? "SEO services" : f.navLabel}</p>
+          <h1 id="page-h">{f.h1}</h1>
+          <p class="lead">{f.lede}</p>
+          <div class="btn-row">
+            <a class="btn btn--primary" href={`/contact-us/?service=${f.slug}`}>Discuss your project</a>
+            <a class="btn btn--secondary" href="#packages">Compare packages</a>
+          </div>
+        </div>
+        <aside class="phero__panel" aria-labelledby="start-h">
+          <h2 id="start-h">Popular starting points</h2>
+          <ul>
+            {f.entryIds.map((id) => {
+              const p = byId(id);
+              return (
+                <li><a href={`#${packageAnchor(p)}`}><span>{p.name}</span><Price pkg={p} /></a></li>
+              );
+            })}
+          </ul>
+          <p class="small muted">{pkgs.length} packages: {countText}. {site.currencyNote}</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="fit-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Fit</p>
+        <h2 id="fit-h">Who {f.name === "SEO" ? "our SEO services suit" : "this suits"}</h2>
+      </div>
+      <div class="fit">
+        <div class="card"><h3>A good fit</h3><ul class="ticks">{f.suits.map((s) => <li>{s}</li>)}</ul></div>
+        <div class="card card--quiet"><h3>Not what we offer</h3><ul class="crosses">{f.notFor.map((s) => <li>{s}</li>)}</ul></div>
+      </div>
+      <h3 class="problems-h">Problems we address</h3>
+      <div class="problems">
+        {f.problems.map((p) => (<div class="problem"><h4>{p.title}</h4><p>{p.body}</p></div>))}
+      </div>
+    </div>
+  </section>
+
+  <div id="packages" class="section section--white packages">
+    <div class="wrap">
+      <div class="section-head section-head--split">
+        <div>
+          <p class="eyebrow">Packages and prices</p>
+          <h2>{f.navLabel} packages</h2>
+        </div>
+        <div>
+          <p>Every package lists what is included, what is not, what we need from you and how delivery is accepted. {site.currencyNote} {site.taxNote}</p>
+          <p class="small">{site.thirdPartyNote}</p>
+        </div>
+      </div>
+      {f.groups.map((g, gi) => (
+        <section class="group" aria-labelledby={`group-${gi}`}>
+          <div class="group__head">
+            <h2 id={`group-${gi}`} class="group__title">{g.title}</h2>
+            <p class="muted">{g.intro}</p>
+          </div>
+          {g.ids.length > 1 && <PackageComparison ids={g.ids} caption={`${g.title}: package comparison`} />}
+          <div class="group__details">{g.ids.map((id) => <PackageDetails id={id} />)}</div>
+        </section>
+      ))}
+    </div>
+  </div>
+
+  <section class="section" aria-labelledby="process-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Engagement</p>
+        <h2 id="process-h">How a {f.name === "SEO" ? "SEO" : f.navLabel.toLowerCase()} engagement works</h2>
+      </div>
+      <Process steps={f.process} />
+      <div class="practical">
+        <div class="card">
+          <h3>What we need from you</h3>
+          <ul class="ticks">{f.inputs.map((s) => <li>{s}</li>)}</ul>
+        </div>
+        <div class="card">
+          <h3>Timeline</h3>
+          <p>{f.timeline}</p>
+          <h3>Revisions</h3>
+          <p>Usually one or two consolidated rounds. The exact limit is written on each package and takes priority.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="faq-h">
+    <div class="wrap faq-grid">
+      <div>
+        <p class="eyebrow">Questions</p>
+        <h2 id="faq-h">{f.navLabel} questions</h2>
+        <p class="muted">Can't see your question? <a href={`/contact-us/?service=${f.slug}`}>Ask us directly</a>.</p>
+      </div>
+      <Faq faqs={f.faqs} />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="rel-h">
+    <div class="wrap">
+      <h2 id="rel-h" class="rel-h">Related services</h2>
+      <div class="related">
+        {related.map((r) => (
+          <a class="rel" href={`/services/${r.slug}/`}><h3>{r.navLabel}</h3><p>{r.summary}</p><span class="link-arrow" aria-hidden="true">View packages</span></a>
+        ))}
+      </div>
+      <div class="cta dark">
+        <div>
+          <h2>Not sure which package fits?</h2>
+          <p>Tell us about your site and goals. We will recommend a starting point, or tell you honestly if we are not the right fit.</p>
+        </div>
+        <a class="btn btn--lime" href={`/contact-us/?service=${f.slug}`}>Discuss your project</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .phero { background: var(--white); border-bottom: 1px solid var(--border); padding-block: 32px clamp(56px, 6vw, 88px); }
+  .phero__grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.85fr); gap: clamp(32px, 5vw, 72px); align-items: start; }
+  .phero h1 { max-width: 20ch; font-size: clamp(2.25rem, 1.6rem + 2.4vw, 3.5rem); }
+  .phero .lead { margin-bottom: 28px; }
+  .phero__panel { background: var(--paper); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-top: 28px; }
+  .phero__panel h2 { font-size: 1.05rem; font-family: var(--font-body); font-weight: 600; margin-bottom: 14px; }
+  .phero__panel ul { list-style: none; margin: 0 0 16px; padding: 0; display: grid; gap: 8px; }
+  .phero__panel a { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 16px; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--ink); text-decoration: none; font-weight: 600; }
+  .phero__panel a:hover { border-color: var(--blue); }
+  .phero__panel p { margin: 0; }
+  @media (max-width: 960px) { .phero__grid { grid-template-columns: 1fr; } .phero__panel { margin-top: 0; } }
+
+  .fit { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .fit h3 { margin-bottom: 18px; }
+  .card--quiet { background: transparent; border-style: dashed; }
+  .problems-h { margin: 56px 0 20px; }
+  .problems { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .problem { border-top: 3px solid var(--ink); padding-top: 16px; }
+  .problem h4 { font: 600 1.05rem/1.3 var(--font-head); margin: 0 0 8px; }
+  .problem p { color: var(--slate); margin: 0; font-size: 0.98rem; }
+  @media (max-width: 760px) { .fit { grid-template-columns: 1fr; } .card { padding: 24px; } }
+
+  .packages { scroll-margin-top: var(--header-h); }
+  .group + .group { margin-top: 72px; }
+  .group__head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px 40px; align-items: end; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 2px solid var(--ink); }
+  .group__title { font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.85rem); margin: 0; }
+  .group__head p { margin: 0; }
+  .group__details { display: grid; gap: 16px; margin-top: 16px; }
+  @media (max-width: 760px) { .group__head { grid-template-columns: 1fr; } }
+
+  .practical { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 56px; }
+  .practical h3 { margin-bottom: 14px; }
+  .practical p + h3 { margin-top: 24px; }
+  .practical p { color: #2b3b54; }
+  @media (max-width: 760px) { .practical { grid-template-columns: 1fr; } }
+
+  .faq-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(32px, 6vw, 96px); align-items: start; }
+  @media (max-width: 900px) { .faq-grid { grid-template-columns: 1fr; } }
+
+  .rel-h { font-size: clamp(1.5rem, 1.3rem + 0.8vw, 2rem); }
+  .related { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-bottom: 56px; }
+  .rel { display: flex; flex-direction: column; gap: 8px; padding: 24px; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); color: var(--ink); text-decoration: none; }
+  .rel:hover { border-color: var(--blue); color: var(--ink); }
+  .rel h3 { margin: 0; }
+  .rel p { color: var(--slate); margin: 0; font-size: 0.97rem; }
+  .rel .link-arrow { margin-top: auto; color: var(--blue); }
+  @media (max-width: 860px) { .related { grid-template-columns: 1fr; } }
+  .cta { border-radius: 24px; padding: clamp(32px, 5vw, 56px); display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; background: var(--ink) radial-gradient(120% 140% at 100% 100%, #213a6b 0%, transparent 55%); }
+  .cta h2 { font-size: clamp(1.5rem, 1.3rem + 0.8vw, 2rem); }
+  .cta p { color: var(--text-on-dark); max-width: 60ch; margin: 0; }
+  @media (max-width: 760px) { .cta { grid-template-columns: 1fr; } .cta .btn { width: 100%; } }
+</style>

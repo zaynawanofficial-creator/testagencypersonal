@@ -1,0 +1,115 @@
+---
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import ClassChip from "../../components/ClassChip.astro";
+import Price from "../../components/Price.astro";
+import { byFamily, familyStartingPrice, packageAnchor } from "../../data/catalogue";
+import { orderedFamilies } from "../../data/families";
+import { site } from "../../data/site";
+const crumbs = [{ name: "Home", path: "/" }, { name: "Services", path: "/services/" }];
+---
+<Base
+  title="Digital Marketing & SEO Services with Published Prices | SEO Booster"
+  description="All SEO Booster services in one place: SEO, digital marketing, content writing, web design and development, website maintenance, graphic design and ecommerce. 50 packages with USD prices and full scope."
+  crumbs={crumbs}
+>
+  <section class="phero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <p class="eyebrow">Services</p>
+      <h1>Digital marketing and SEO services, priced in the open</h1>
+      <p class="lead">Seven service areas and 50 packages. Each one states its price, what is included, what is excluded, what we need from you and how long it takes. {site.currencyNote}</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="models-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How pricing works</p>
+        <h2 id="models-h">Three ways to work with us</h2>
+      </div>
+      <div class="models">
+        <div class="model"><span class="chip chip--fixed">Fixed scope</span><h3>Fixed-scope packages</h3><p>A defined deliverable for a set price, paid in full. The scope, lead time and revision limit are written on the package.</p></div>
+        <div class="model"><span class="chip chip--proposal">By proposal</span><h3>Bespoke projects</h3><p>Work that depends on size or complexity. The "from" price is a starting point; you receive a written proposal with milestone payments.</p></div>
+        <div class="model"><span class="chip chip--monthly">Monthly</span><h3>Ongoing engagements</h3><p>Paid in advance, month to month. Cancel at least seven days before the next billing period.</p></div>
+      </div>
+      <p class="small muted notes">{site.taxNote} {site.thirdPartyNote}</p>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="all-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">All packages</p>
+        <h2 id="all-h">Browse by service area</h2>
+      </div>
+      <div class="fams">
+        {orderedFamilies.map((f) => (
+          <section class="fam" aria-labelledby={`fam-${f.slug}`}>
+            <div class="fam__head">
+              <div>
+                <h3 id={`fam-${f.slug}`}><a href={`/services/${f.slug}/`}>{f.navLabel}</a></h3>
+                <p class="muted">{f.summary}</p>
+              </div>
+              <p class="fam__from">{familyStartingPrice(f.name)} <abbr title="US dollars">USD</abbr></p>
+            </div>
+            <ul class="fam__list">
+              {byFamily(f.name).map((p) => (
+                <li>
+                  <a href={`/services/${f.slug}/#${packageAnchor(p)}`}>{p.name}</a>
+                  <span class="fam__row"><ClassChip pkg={p} /><Price pkg={p} /></span>
+                </li>
+              ))}
+            </ul>
+            <a class="link-arrow" href={`/services/${f.slug}/`}>Full {f.navLabel} details</a>
+          </section>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="cta dark">
+        <div>
+          <h2>Need more than one service?</h2>
+          <p>Many projects combine an audit, a build and ongoing support. Tell us what you are trying to achieve and we will suggest a sensible order.</p>
+        </div>
+        <a class="btn btn--lime" href="/contact-us/">Discuss your project</a>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .phero { background: var(--white); border-bottom: 1px solid var(--border); padding-block: 32px clamp(48px, 5vw, 80px); }
+  .phero h1 { max-width: 18ch; }
+  .models { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .model { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+  .model h3 { margin: 16px 0 8px; }
+  .model p { color: var(--slate); margin: 0; }
+  .notes { margin: 24px 0 0; max-width: 80ch; }
+  @media (max-width: 860px) { .models { grid-template-columns: 1fr; } }
+  .fams { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+  .fam { border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; background: var(--paper); }
+  /* SEO spans both columns; the other six form three even rows (no orphaned card). */
+  .fam:first-child { grid-column: 1 / -1; }
+  .fam:first-child .fam__list { columns: 2; column-gap: 40px; }
+  .fam:first-child .fam__list li { break-inside: avoid; }
+  .fam__head { display: flex; justify-content: space-between; gap: 16px; align-items: start; margin-bottom: 16px; }
+  .fam h3 { margin-bottom: 6px; font-size: 1.4rem; }
+  .fam h3 a { color: var(--ink); text-decoration: none; }
+  .fam h3 a:hover { color: var(--blue); text-decoration: underline; }
+  .fam__head p { margin: 0; font-size: 0.97rem; }
+  .fam__from { font: 700 0.95rem/1.2 var(--font-head); white-space: nowrap; background: var(--lime); padding: 6px 10px; border-radius: 999px; color: var(--ink) !important; }
+  .fam__from abbr { text-decoration: none; font-size: 0.75rem; }
+  .fam__list { list-style: none; margin: 0 0 18px; padding: 0; border-top: 1px solid var(--border); }
+  .fam__list li { display: flex; justify-content: space-between; align-items: center; gap: 8px 16px; flex-wrap: wrap; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .fam__list a { font-weight: 600; color: var(--ink); text-decoration: none; }
+  .fam__list a:hover { color: var(--blue); text-decoration: underline; }
+  .fam__row { display: inline-flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  @media (max-width: 960px) { .fams { grid-template-columns: 1fr; } .fam:first-child .fam__list { columns: 1; } }
+  @media (max-width: 480px) { .fam { padding: 20px; } .fam__head { flex-direction: column; } }
+  .cta { border-radius: 24px; padding: clamp(32px, 5vw, 56px); display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; background: var(--ink) radial-gradient(120% 140% at 100% 100%, #213a6b 0%, transparent 55%); }
+  .cta p { color: var(--text-on-dark); max-width: 60ch; margin: 0; }
+  @media (max-width: 760px) { .cta { grid-template-columns: 1fr; } .cta .btn { width: 100%; } }
+</style>

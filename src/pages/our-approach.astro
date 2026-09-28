@@ -1,0 +1,70 @@
+---
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import Process from "../components/Process.astro";
+import { site } from "../data/site";
+const crumbs = [{ name: "Home", path: "/" }, { name: "Our Approach", path: "/our-approach/" }];
+---
+<Base
+  title="Our Approach: How SEO Booster Scopes, Delivers and Reports | SEO Booster"
+  description="How SEO Booster works: Discovery, Strategy, Execution and Reporting. Written scope, stated revision limits, client-owned accounts, business-hours support and no ranking guarantees."
+  crumbs={crumbs}
+>
+  <section class="phero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <p class="eyebrow">Our Approach</p>
+      <h1>Clear scope first, then careful delivery</h1>
+      <p class="lead">Most agency disappointment comes from unclear expectations. We fix that before work starts: what you are buying, what it excludes, what we need from you and how we will both know it is finished.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="stages-h">
+    <div class="wrap">
+      <div class="section-head"><p class="eyebrow">Four stages</p><h2 id="stages-h">Discovery, Strategy, Execution, Reporting</h2></div>
+      <Process steps={[
+        { title: "Discovery", body: "You complete an intake and give the access the package needs. We record where things stand today, so progress can be judged honestly." },
+        { title: "Strategy", body: "We agree priorities, owners, sequencing and acceptance criteria. For bespoke work this becomes a written proposal with milestones." },
+        { title: "Execution", body: "Zain leads delivery and brings in vetted specialists where the scope needs them. Customer-facing work is shared for approval." },
+        { title: "Reporting", body: "Every package ends with defined evidence: a report, change log, completion sheet or monthly log." },
+      ]} />
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="rules-h">
+    <div class="wrap">
+      <div class="section-head"><p class="eyebrow">Working terms</p><h2 id="rules-h">The rules we work by</h2></div>
+      <dl class="rules">
+        <div><dt>Prices</dt><dd>{site.currencyNote} {site.taxNote} Fixed-scope packages are paid in full; bespoke work uses proposal and milestone payments.</dd></div>
+        <div><dt>Monthly services</dt><dd>Paid in advance, month to month. Cancel at least seven days before the next billing period.</dd></div>
+        <div><dt>Lead times</dt><dd>Stated on every package and counted from when we have the required inputs and access.</dd></div>
+        <div><dt>Revisions</dt><dd>Usually one or two consolidated rounds. The exact limit on each package takes priority.</dd></div>
+        <div><dt>Third-party costs</dt><dd>{site.thirdPartyNote}</dd></div>
+        <div><dt>Your accounts</dt><dd>Ad accounts, stores, analytics and platforms stay in your name. For ecommerce work you remain the merchant of record; we do not hold client funds or buy inventory.</dd></div>
+        <div><dt>Support hours</dt><dd>Business-hours support. We do not currently offer 24/7 incident response.</dd></div>
+        <div><dt>Outcomes</dt><dd>We do not guarantee rankings, traffic, AI citations, map positions, revenue or platform approvals. We commit to the scope and to reporting honestly on it.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="links-h">
+    <div class="wrap narrow">
+      <p class="eyebrow">Link building</p>
+      <h2 id="links-h">How we handle links and listings</h2>
+      <p>Link-related packages cover legitimate business profiles and citations, quality research and transparent outreach, with a report of what was submitted, what went live and what needs your action. We never promise dofollow status, indexation, domain metrics, placements or rankings.</p>
+      <p>Any paid placement needs your approval of the publisher cost and must be disclosed and qualified in line with current search engine and platform guidance. We do not sell likes, views, followers or reviews.</p>
+      <div class="btn-row"><a class="btn btn--primary" href="/contact-us/">Discuss your project</a><a class="btn btn--secondary" href="/services/">See all services</a></div>
+    </div>
+  </section>
+</Base>
+<style>
+  .phero { background: var(--white); border-bottom: 1px solid var(--border); padding-block: 32px clamp(48px, 5vw, 80px); }
+  .phero h1 { max-width: 18ch; }
+  .rules { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 48px; margin: 0; }
+  .rules div { padding: 20px 0; border-top: 1px solid var(--border); display: grid; grid-template-columns: 10em 1fr; gap: 16px; }
+  .rules dt { font: 600 1.02rem/1.4 var(--font-head); }
+  .rules dd { margin: 0; color: #2b3b54; }
+  @media (max-width: 900px) { .rules { grid-template-columns: 1fr; } }
+  @media (max-width: 520px) { .rules div { grid-template-columns: 1fr; gap: 6px; } }
+  .narrow { max-width: 760px; }
+</style>

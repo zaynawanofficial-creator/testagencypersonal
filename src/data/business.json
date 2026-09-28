@@ -1,0 +1,8 @@
+{
+  "_comment": "Operational values gated for launch. null/false = not yet confirmed. Read by src/data/site.ts and scripts/release.mjs.",
+  "publicEmail": null,
+  "phone": null,
+  "logo": null,
+  "policiesPublished": false,
+  "insightsVisible": false
+}

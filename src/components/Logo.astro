@@ -1,0 +1,22 @@
+---
+import { site } from "../data/site";
+interface Props { inverse?: boolean }
+const { inverse = false } = Astro.props;
+---
+<a class:list={["logo", { "logo--inverse": inverse }]} href="/" aria-label={`${site.brand} home`}>
+  {site.logo ? (
+    <img src={site.logo.src} width={site.logo.width} height={site.logo.height} alt={site.brand} />
+  ) : (
+    <span class="logo__word" aria-hidden="true">SEO&nbsp;Booster</span>
+  )}
+</a>
+<style>
+  .logo { display: inline-flex; align-items: center; text-decoration: none; color: var(--ink); flex: none; min-height: 44px; }
+  .logo:hover { color: var(--ink); text-decoration: none; }
+  .logo img { height: 52px; width: auto; }
+  .logo__word { font: 700 1.5rem/1 var(--font-head); letter-spacing: -0.03em; position: relative; padding-bottom: 6px; }
+  .logo__word::after { content: ""; position: absolute; left: 0; bottom: 0; width: 34px; height: 5px; border-radius: 3px; background: var(--lime); box-shadow: inset 0 0 0 1px rgb(21 37 65 / 0.12); }
+  .logo--inverse { color: var(--white); }
+  .logo--inverse:hover { color: var(--white); }
+  @media (max-width: 1023px) { .logo img { height: 44px; } .logo__word { font-size: 1.35rem; } }
+</style>

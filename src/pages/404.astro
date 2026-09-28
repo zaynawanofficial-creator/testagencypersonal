@@ -1,0 +1,23 @@
+---
+import Base from "../layouts/Base.astro";
+import { orderedFamilies } from "../data/families";
+---
+<Base title="Page not found | SEO Booster" description="The page you were looking for could not be found. Browse SEO Booster services or get in touch to discuss your project." noindex>
+  <section class="section">
+    <div class="wrap nf">
+      <p class="eyebrow">404</p>
+      <h1>That page could not be found</h1>
+      <p class="lead">The link may be out of date, or the page may have moved during our website update. These are the most useful places to go next.</p>
+      <div class="btn-row"><a class="btn btn--primary" href="/">Go to the homepage</a><a class="btn btn--secondary" href="/contact-us/">Discuss your project</a></div>
+      <h2>Services</h2>
+      <ul>{orderedFamilies.map((f) => <li><a href={`/services/${f.slug}/`}>{f.navLabel}</a></li>)}</ul>
+    </div>
+  </section>
+</Base>
+<style>
+  .nf { max-width: 760px; }
+  .nf h2 { font-size: 1.3rem; margin-top: 56px; }
+  .nf ul { columns: 2; padding-left: 1.2em; }
+  .nf li { margin-bottom: 8px; }
+  @media (max-width: 520px) { .nf ul { columns: 1; } }
+</style>

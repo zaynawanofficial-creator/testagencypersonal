@@ -1,0 +1,84 @@
+---
+import { byId, catalogue, exclusionItems, items, packageAnchor } from "../data/catalogue";
+import ClassChip from "./ClassChip.astro";
+import Price from "./Price.astro";
+interface Props { id: number }
+const p = byId(Astro.props.id);
+const ex = exclusionItems(p.exclusions);
+const billing =
+  p.billing === "monthly" ? "Monthly, billed in advance" : p.classification === "Quote-led bespoke" ? "By proposal, milestone payments" : p.billing === "per-word" ? "Per word, by proposal" : "One-time, paid in full";
+const cta = p.classification === "Fixed-scope one-time" ? "Enquire about this package" : p.classification === "Ongoing engagement" ? "Discuss monthly support" : "Request a proposal";
+---
+<article class="pkg" id={packageAnchor(p)} aria-labelledby={`${packageAnchor(p)}-h`}>
+  <header class="pkg__head">
+    <div class="pkg__title">
+      <ClassChip pkg={p} />
+      <h3 id={`${packageAnchor(p)}-h`}>{p.name}</h3>
+      <p class="pkg__fit">{p.clientFit}</p>
+    </div>
+    <div class="pkg__buy">
+      <Price pkg={p} size="lg" />
+      <p class="pkg__billing">{billing}</p>
+      <a class="btn btn--primary btn--sm" href={`/contact-us/?package=${p.id}`}>{cta}<span class="visually-hidden">: {p.name}</span></a>
+    </div>
+  </header>
+  <div class="pkg__body">
+    <div>
+      <h4>What's included</h4>
+      <ul class="ticks">{items(p.deliverables).map((d) => <li>{d}</li>)}</ul>
+    </div>
+    <dl class="pkg__meta">
+      <div><dt>Lead time</dt><dd>{p.leadTime}</dd></div>
+      <div><dt>Revisions</dt><dd>{p.revisions}</dd></div>
+      <div><dt>Renewal</dt><dd>{p.renewal}</dd></div>
+    </dl>
+  </div>
+  <details class="pkg__more">
+    <summary>Exclusions, what we need from you, and how delivery is accepted</summary>
+    <div class="pkg__more-grid">
+      <div>
+        <h4>Not included</h4>
+        <ul class="crosses">{ex.list.map((d) => <li>{d}</li>)}</ul>
+        {ex.note && <p>{ex.note}</p>}
+        {p.standardThirdPartyExclusion && <p class="small muted">{catalogue.standardThirdPartyExclusion}</p>}
+      </div>
+      <div>
+        <h4>What we need from you</h4>
+        <p>{p.prerequisites}</p>
+        <h4>How delivery is accepted</h4>
+        <p>{p.acceptance}</p>
+        <p class="small muted">{p.owner}</p>
+      </div>
+    </div>
+  </details>
+</article>
+<style>
+  /* Catalogue text contains long slash-joined terms (e.g. titles/descriptions/images); let them wrap. */
+  .pkg { overflow-wrap: anywhere; }
+  .pkg { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); scroll-margin-top: calc(var(--header-h) + 16px); }
+  .pkg:target { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
+  .pkg__head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 40px; padding: 28px 28px 0; }
+  .pkg__title h3 { margin: 12px 0 6px; font-size: 1.4rem; }
+  .pkg__fit { color: var(--slate); margin: 0; max-width: 60ch; }
+  .pkg__buy { display: grid; justify-items: end; align-content: start; gap: 8px; text-align: right; }
+  .pkg__billing { margin: 0; font-size: 0.9rem; color: var(--slate); }
+  .pkg__buy .btn { margin-top: 6px; }
+  .pkg__body { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px; padding: 24px 28px; }
+  h4 { font: 600 0.8125rem/1.2 var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); margin: 0 0 14px; }
+  .pkg__meta { margin: 0; display: grid; gap: 14px; align-content: start; align-self: start; background: var(--paper); border-radius: var(--radius-sm); padding: 18px; font-size: 0.95rem; }
+  .pkg__meta dt { font-weight: 600; }
+  .pkg__meta dd { margin: 2px 0 0; color: var(--slate); }
+  .pkg__more { border-top: 1px solid var(--border); }
+  .pkg__more summary { cursor: pointer; padding: 16px 28px; font-weight: 600; color: var(--blue); list-style-position: inside; min-height: 44px; }
+  .pkg__more summary:hover { text-decoration: underline; }
+  .pkg__more-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; padding: 4px 28px 28px; font-size: 0.97rem; }
+  .pkg__more-grid p { color: #2b3b54; }
+  .pkg__more-grid h4 + p { margin-bottom: 22px; }
+  @media (max-width: 760px) {
+    .pkg__head { grid-template-columns: minmax(0, 1fr); padding: 22px 20px 0; }
+    .pkg__buy { justify-items: start; text-align: left; }
+    .pkg__buy .btn { width: 100%; }
+    .pkg__body, .pkg__more-grid { grid-template-columns: minmax(0, 1fr); padding-inline: 20px; gap: 22px; }
+    .pkg__more summary { padding-inline: 20px; }
+  }
+</style>

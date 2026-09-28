@@ -1,0 +1,24 @@
+---
+import type { Faq } from "../data/families";
+interface Props { faqs: Faq[]; headingId?: string }
+const { faqs } = Astro.props;
+---
+<div class="faq">
+  {faqs.map((f) => (
+    <details>
+      <summary><h3>{f.q}</h3></summary>
+      <p>{f.a}</p>
+    </details>
+  ))}
+</div>
+<style>
+  .faq { border-top: 1px solid var(--border); }
+  details { border-bottom: 1px solid var(--border); }
+  summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 24px; align-items: center; padding: 20px 0; min-height: 44px; }
+  summary::-webkit-details-marker { display: none; }
+  summary h3 { margin: 0; font-size: 1.125rem; }
+  summary::after { content: ""; flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 3v10M3 8h10' stroke='%23152541' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") center/14px no-repeat; border: 1px solid var(--border); transition: transform .2s ease; }
+  details[open] summary::after { transform: rotate(45deg); }
+  summary:hover h3 { color: var(--blue); }
+  details p { color: #2b3b54; max-width: 70ch; padding-bottom: 12px; }
+</style>

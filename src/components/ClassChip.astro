@@ -1,0 +1,7 @@
+---
+import { classLabel, type Package } from "../data/catalogue";
+interface Props { pkg: Package }
+const { pkg } = Astro.props;
+const cls = pkg.classification === "Fixed-scope one-time" ? "fixed" : pkg.classification === "Quote-led bespoke" ? "proposal" : "monthly";
+---
+<span class={`chip chip--${cls}`}>{classLabel[pkg.classification]}</span>

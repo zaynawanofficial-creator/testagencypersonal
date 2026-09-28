@@ -1,0 +1,33 @@
+---
+interface Props { steps: { title: string; body: string }[]; dark?: boolean }
+const { steps, dark = false } = Astro.props;
+---
+<ol class:list={["process", { "process--dark": dark }]}>
+  {steps.map((s, i) => (
+    <li>
+      <span class="num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+      <h3>{s.title}</h3>
+      <p>{s.body}</p>
+    </li>
+  ))}
+</ol>
+<style>
+  .process { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; counter-reset: s; position: relative; }
+  .process li { position: relative; padding: 0 24px 0 0; }
+  .process li::before { content: ""; display: block; height: 2px; background: var(--border); margin: 21px 0 24px 52px; }
+  .process li:last-child::before { background: linear-gradient(90deg, var(--border), transparent); }
+  .num { position: absolute; top: 0; left: 0; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--lime); color: var(--ink); font: 700 0.95rem/1 var(--font-head); }
+  .process h3 { margin-bottom: 8px; }
+  .process p { color: var(--slate); margin: 0; font-size: 0.98rem; }
+  .process--dark li::before { background: var(--border-dark); }
+  .process--dark li:last-child::before { background: linear-gradient(90deg, var(--border-dark), transparent); }
+  .process--dark p { color: var(--text-on-dark); }
+  @media (max-width: 900px) {
+    .process { grid-template-columns: 1fr; gap: 28px; }
+    .process li { padding: 0 0 0 64px; min-height: 44px; }
+    .process li::before { display: none; }
+    .process li:not(:last-child)::after { content: ""; position: absolute; left: 21px; top: 52px; bottom: -22px; width: 2px; background: var(--border); }
+    .process--dark li:not(:last-child)::after { background: var(--border-dark); }
+    .num { top: -4px; }
+  }
+</style>

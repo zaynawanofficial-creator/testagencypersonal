@@ -1,0 +1,171 @@
+---
+import { packages } from "../data/catalogue";
+import { orderedFamilies } from "../data/families";
+import { site } from "../data/site";
+const endpoint = site.forms.endpoint;
+---
+<form class="enq" novalidate data-enquiry data-endpoint={endpoint ?? ""} action={endpoint ?? undefined} method="post" aria-describedby="enq-status">
+  <div class="enq__status" id="enq-status" role="status" aria-live="polite" tabindex="-1" data-status></div>
+
+  <div class="enq__row">
+    <div class="field">
+      <label for="f-name">Your name</label>
+      <input class="input" id="f-name" name="name" type="text" autocomplete="name" required maxlength="120" aria-describedby="e-name" />
+      <p class="field-error" id="e-name" data-error-for="name"></p>
+    </div>
+    <div class="field">
+      <label for="f-email">Email address</label>
+      <input class="input" id="f-email" name="email" type="email" autocomplete="email" required maxlength="200" aria-describedby="e-email" />
+      <p class="field-error" id="e-email" data-error-for="email"></p>
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="f-website">Website <span class="opt">(optional)</span></label>
+    <input class="input" id="f-website" name="website" type="url" inputmode="url" autocomplete="url" placeholder="https://" maxlength="300" aria-describedby="e-website" />
+    <p class="field-error" id="e-website" data-error-for="website"></p>
+  </div>
+
+  <div class="field">
+    <label for="f-interest">Service or package you are interested in</label>
+    <select class="select" id="f-interest" name="interest" required aria-describedby="h-interest e-interest">
+      <option value="">Choose one</option>
+      <option value="general">Not sure yet / general enquiry</option>
+      {orderedFamilies.map((f) => (
+        <optgroup label={f.navLabel}>
+          <option value={`family:${f.slug}`}>{f.navLabel}: help me choose</option>
+          {packages.filter((p) => p.family === f.name).map((p) => (
+            <option value={`package:${p.id}`}>{p.name} ({p.displayPrice} USD)</option>
+          ))}
+        </optgroup>
+      ))}
+    </select>
+    <p class="hint" id="h-interest">Arrived from a package? It is selected for you. You can change it.</p>
+    <p class="field-error" id="e-interest" data-error-for="interest"></p>
+  </div>
+
+  <div class="enq__row">
+    <div class="field">
+      <label for="f-budget">Budget <span class="opt">(optional)</span></label>
+      <select class="select" id="f-budget" name="budget">
+        <option value="">Prefer not to say</option>
+        <option>Under $500</option><option>$500 to $1,500</option><option>$1,500 to $5,000</option><option>Over $5,000</option><option>Monthly budget</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="f-timing">Timing <span class="opt">(optional)</span></label>
+      <select class="select" id="f-timing" name="timing">
+        <option value="">No fixed date</option>
+        <option>As soon as possible</option><option>Within a month</option><option>In 1 to 3 months</option><option>Just researching</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="f-message">What would you like to achieve?</label>
+    <textarea class="textarea" id="f-message" name="message" required minlength="20" maxlength="5000" aria-describedby="h-message e-message"></textarea>
+    <p class="hint" id="h-message">A few sentences is enough: your goal, any deadline and anything we should know. Please do not include passwords.</p>
+    <p class="field-error" id="e-message" data-error-for="message"></p>
+  </div>
+
+  <div class="hp" aria-hidden="true">
+    <label for="f-company">Leave this field empty</label>
+    <input id="f-company" name="company" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+  <input type="hidden" name="source" data-source />
+
+  <div class="enq__actions">
+    <button class="btn btn--primary" type="submit" data-submit>Send enquiry</button>
+    <p class="small muted">We use your details only to reply to this enquiry.</p>
+  </div>
+  {!endpoint && <noscript><p class="notice notice--info">Online enquiries are not active yet on this build.</p></noscript>}
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("[data-enquiry]")!;
+  const status = form.querySelector<HTMLElement>("[data-status]")!;
+  const submit = form.querySelector<HTMLButtonElement>("[data-submit]")!;
+  const endpoint = form.dataset.endpoint || "";
+  const select = form.querySelector<HTMLSelectElement>("#f-interest")!;
+  form.querySelector<HTMLInputElement>("[data-source]")!.value = location.pathname + location.search;
+
+  // Package attribution from ?package=ID or ?service=slug
+  const qs = new URLSearchParams(location.search);
+  const want = qs.get("package") ? `package:${qs.get("package")}` : qs.get("service") ? `family:${qs.get("service")}` : "";
+  if (want && [...select.options].some((o) => o.value === want)) select.value = want;
+
+  const setError = (name: string, msg: string) => {
+    const el = form.elements.namedItem(name) as HTMLInputElement | null;
+    const out = form.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+    if (el) el.setAttribute("aria-invalid", msg ? "true" : "false");
+    if (out) out.textContent = msg;
+  };
+  function validate(): string[] {
+    const d = new FormData(form);
+    const bad: string[] = [];
+    const v = (k: string) => String(d.get(k) ?? "").trim();
+    const check = (k: string, msg: string, ok: boolean) => { setError(k, ok ? "" : msg); if (!ok) bad.push(k); };
+    check("name", "Enter your name.", v("name").length > 0);
+    check("email", "Enter a valid email address, like name@example.com.", /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v("email")));
+    check("website", "Enter a full web address starting with http:// or https://, or leave it blank.", !v("website") || /^https?:\/\/[^\s.]+\.[^\s]+$/i.test(v("website")));
+    check("interest", "Choose a service, a package or \"Not sure yet\".", v("interest").length > 0);
+    check("message", "Tell us a little more (at least 20 characters).", v("message").length >= 20);
+    return bad;
+  }
+  const show = (kind: "error" | "success" | "info", html: string) => {
+    status.className = `enq__status notice notice--${kind}`;
+    status.innerHTML = html;
+    status.focus();
+  };
+  let busy = false;
+  let key = crypto.randomUUID(); // idempotency key: stays the same across retries of the same message
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (busy) return; // duplicate-submission guard
+    const bad = validate();
+    if (bad.length) {
+      show("error", `<p>Please fix ${bad.length === 1 ? "1 field" : bad.length + " fields"} below.</p>`);
+      (form.elements.namedItem(bad[0]) as HTMLElement).focus();
+      return;
+    }
+    if ((form.elements.namedItem("company") as HTMLInputElement).value) return; // honeypot: silently drop
+    if (!endpoint) {
+      show("info", "<p><strong>Online enquiries are not active yet.</strong> Your message has not been sent and is still in the form. Please try again later.</p>");
+      return;
+    }
+    busy = true; submit.disabled = true; submit.textContent = "Sending…";
+    const selected = select.options[select.selectedIndex]?.text ?? "";
+    try {
+      const body = Object.fromEntries(new FormData(form));
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json", "Idempotency-Key": key },
+        body: JSON.stringify({ ...body, interestLabel: selected, idempotencyKey: key }),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      form.reset();
+      key = crypto.randomUUID();
+      show("success", "<p><strong>Thank you, your enquiry has been sent.</strong> We will reply to the email address you gave.</p>");
+    } catch {
+      show("error", "<p><strong>Your enquiry could not be sent.</strong> Nothing has been lost: your message is still in the form. Please check your connection and select Send enquiry again.</p>");
+    } finally {
+      busy = false; submit.disabled = false; submit.textContent = "Send enquiry";
+    }
+  });
+  form.addEventListener("input", (e) => {
+    const t = e.target as HTMLInputElement;
+    if (t.getAttribute("aria-invalid") === "true") validate();
+  });
+</script>
+<style>
+  .enq { display: grid; gap: 22px; }
+  .enq__row { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .enq__status:empty { display: none; }
+  .enq__status:focus { outline: none; }
+  .opt { font-weight: 400; color: var(--slate); }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .enq__actions { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; }
+  .enq__actions p { margin: 0; }
+  @media (max-width: 640px) { .enq__row { grid-template-columns: 1fr; } .enq__actions .btn { width: 100%; } }
+</style>

@@ -1,0 +1,67 @@
+---
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { site } from "../data/site";
+const crumbs = [{ name: "Home", path: "/" }, { name: "About", path: "/about/" }];
+const schema = [{ "@context": "https://schema.org", "@type": "AboutPage", name: "About SEO Booster", mainEntity: { "@type": "Organization", name: site.brand, founder: { "@type": "Person", name: site.founder } } }];
+---
+<Base
+  title="About SEO Booster: A Founder-Led Digital Agency | SEO Booster"
+  description="SEO Booster is a founder-led agency run by Zain Ul Abedeen, serving SMEs and ecommerce brands with SEO, digital marketing, content, websites, design and ecommerce services, delivered with vetted specialists."
+  crumbs={crumbs}
+  schema={schema}
+>
+  <section class="phero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <p class="eyebrow">About</p>
+      <h1>A founder-led agency with one accountable lead</h1>
+      <p class="lead">SEO Booster helps SMEs and ecommerce brands get found in search and turn that visibility into enquiries and sales. It is run by {site.founder}, who scopes and is accountable for every project.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="model-h">
+    <div class="wrap cols">
+      <div>
+        <h2 id="model-h">How the team works</h2>
+        <p>Zain leads delivery and works with vetted specialists who are brought in for the parts of a project that need them: platform-specific ads, native-language review, design or development capacity. You deal with one person throughout, and the specialists involved are defined by the scope.</p>
+        <p>SEO is our core strength. Around it we offer the services that decide whether search traffic becomes business: websites, content, design, paid channels, maintenance and ecommerce operations.</p>
+      </div>
+      <dl class="facts card">
+        <div><dt>Who we serve</dt><dd>SMEs and ecommerce brands, internationally. Website copy is written in British English.</dd></div>
+        <div><dt>Platforms</dt><dd>WordPress, WooCommerce and Shopify as standard; other technologies by proposal.</dd></div>
+        <div><dt>Paid channels</dt><dd>Google/YouTube, Meta, Microsoft, LinkedIn, TikTok and Pinterest, with specialist availability confirmed per proposal.</dd></div>
+        <div><dt>Languages</dt><dd>Multilingual content through qualified specialists, quoted by proposal.</dd></div>
+        <div><dt>Seller</dt><dd>{site.seller}.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="values-h">
+    <div class="wrap">
+      <div class="section-head"><h2 id="values-h">What you can expect</h2></div>
+      <div class="values">
+        <div><h3>Published prices</h3><p>All 50 packages show a price in US dollars, with any "from" or service-fee basis stated.</p></div>
+        <div><h3>Written limits</h3><p>Every package lists exclusions, revision limits and what we need from you.</p></div>
+        <div><h3>Honest outcomes</h3><p>No ranking, traffic or revenue guarantees, and no bought engagement.</p></div>
+      </div>
+      <div class="btn-row next"><a class="btn btn--primary" href="/contact-us/">Discuss your project</a><a class="btn btn--secondary" href="/our-approach/">Read our approach</a></div>
+    </div>
+  </section>
+</Base>
+<style>
+  .phero { background: var(--white); border-bottom: 1px solid var(--border); padding-block: 32px clamp(48px, 5vw, 80px); }
+  .phero h1 { max-width: 18ch; }
+  .cols { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: clamp(32px, 6vw, 96px); align-items: start; }
+  .cols p { color: #2b3b54; max-width: 62ch; }
+  .facts { margin: 0; display: grid; gap: 0; padding: 8px 28px; }
+  .facts div { padding: 16px 0; border-top: 1px solid var(--border); }
+  .facts div:first-child { border-top: 0; }
+  .facts dt { font: 600 0.98rem/1.3 var(--font-head); }
+  .facts dd { margin: 4px 0 0; color: var(--slate); }
+  .values { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+  .values div { border-top: 3px solid var(--lime); padding-top: 18px; }
+  .values p { color: var(--slate); margin: 0; }
+  .next { margin-top: 48px; }
+  @media (max-width: 860px) { .cols, .values { grid-template-columns: 1fr; } }
+</style>

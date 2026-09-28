@@ -1,0 +1,274 @@
+---
+import Base from "../layouts/Base.astro";
+import Process from "../components/Process.astro";
+import Faq from "../components/Faq.astro";
+import Price from "../components/Price.astro";
+import ClassChip from "../components/ClassChip.astro";
+import { byFamily, byId, familyStartingPrice, packageAnchor } from "../data/catalogue";
+import { familyByName, orderedFamilies } from "../data/families";
+import { site } from "../data/site";
+
+const [seo, ...others] = orderedFamilies;
+const paths = [
+  { title: "Diagnose first", body: "A fixed-price audit tells you what to fix, in what order, before you commit to bigger spend.", ids: [8, 1, 47] },
+  { title: "Build or rebuild", body: "Websites and stores with a defined page or product count, tested before launch.", ids: [31, 43, 30] },
+  { title: "Ongoing support", body: "Monthly work against agreed priorities. Billed in advance, month to month.", ids: [14, 34, 7] },
+];
+const linkTo = (id: number) => `/services/${familyByName(byId(id).family).slug}/#${packageAnchor(byId(id))}`;
+const faqs = [
+  { q: "How much do your services cost?", a: `Every package has a published price in US dollars. One-time packages range from $179 for an SEO blog article to $4,250 for a Shopify or WooCommerce growth store; monthly services start at $129/month. Bespoke work shows a "from" price and is quoted by proposal. ${site.taxNote}` },
+  { q: "What is not included in the price?", a: `${site.thirdPartyNote} Each package lists its own exclusions.` },
+  { q: "How do monthly services work?", a: "Monthly services are paid in advance and run month to month. To stop, give at least seven days' notice before the next billing period." },
+  { q: "How many revisions do I get?", a: "Usually one or two consolidated rounds. The exact limit is written on each package and takes priority." },
+  { q: "When does work start?", a: "Lead times are listed on every package and start once we have the inputs and access that package needs." },
+  { q: "Do you guarantee rankings, traffic or sales?", a: "No. We commit to the scope, the reasoning behind it and clear reporting. Search engines, platforms and markets are outside anyone's control." },
+  { q: "Which platforms do you work with?", a: "WordPress, WooCommerce and Shopify as standard. Other technologies are available by proposal." },
+];
+const schema = [
+  { "@context": "https://schema.org", "@type": "Organization", name: site.brand, url: new URL("/", Astro.site).href, founder: { "@type": "Person", name: site.founder } },
+  { "@context": "https://schema.org", "@type": "WebSite", name: site.brand, url: new URL("/", Astro.site).href },
+];
+---
+<Base
+  title="SEO Booster: SEO & Digital Marketing Services for SMEs and Ecommerce Brands"
+  description="Founder-led SEO, digital marketing, content, web design, maintenance, graphic design and ecommerce services. Published USD prices, written scope and clear exclusions. No ranking guarantees."
+  schema={schema}
+>
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <p class="eyebrow">SEO-led agency for SMEs and ecommerce brands</p>
+        <h1 id="hero-h">Get found by the customers <span class="hl">already searching</span> for you</h1>
+        <p class="lead">SEO Booster offers SEO, digital marketing, content, websites, design and ecommerce services. Every package has a published price, a written scope and clear limits, so you know what you are buying before work starts.</p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="/contact-us/">Discuss your project</a>
+          <a class="btn btn--secondary" href="/services/seo/">Explore SEO services</a>
+        </div>
+        <ul class="hero__facts" aria-label="How we work">
+          <li><strong>50</strong> packages with published USD prices</li>
+          <li><strong>7</strong> service areas, one accountable lead</li>
+          <li><strong>0</strong> ranking guarantees, by design</li>
+        </ul>
+      </div>
+
+      <figure class="serp" aria-labelledby="serp-cap">
+        <div class="serp__query" aria-hidden="true">
+          <svg viewBox="0 0 16 16" width="16" height="16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span>handmade leather wallet with coin pocket</span>
+        </div>
+        <div class="serp__hit">
+          <p class="serp__url"><span class="serp__dot" aria-hidden="true"></span>example-leathergoods.com › wallets › coin-pocket</p>
+          <p class="serp__title">Handmade Leather Wallet with Coin Pocket · 30-Day Returns</p>
+          <p class="serp__desc">Full-grain leather, hand-stitched, 8 card slots and a zipped coin pocket. Ships worldwide. See sizes and colours.</p>
+        </div>
+        <ol class="serp__notes">
+          <li><span class="tag">Intent</span> A product page that answers this exact search, not a generic category.</li>
+          <li><span class="tag">Title</span> The words the buyer used, plus a real reason to click.</li>
+          <li><span class="tag">Detail</span> Specific, checkable facts instead of vague claims.</li>
+        </ol>
+        <figcaption id="serp-cap">Illustration using a fictional store. It shows what on-page SEO work changes in a search listing; it is not client data.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="svc-h">
+    <div class="wrap">
+      <div class="section-head section-head--split">
+        <div>
+          <p class="eyebrow">Services</p>
+          <h2 id="svc-h">Seven service areas, planned to work together</h2>
+        </div>
+        <p>SEO is our core strength. The other six cover what search traffic lands on and what turns it into enquiries and sales: the website, the words, the visuals, the store and the paid channels around it.</p>
+      </div>
+      <div class="families">
+        <a class="fam fam--seo dark" href={`/services/${seo.slug}/`}>
+          <span class="fam__meta"><span>{byFamily(seo.name).length} packages</span><span>{familyStartingPrice(seo.name)} USD</span></span>
+          <h3>{seo.navLabel}</h3>
+          <p>{seo.lede}</p>
+          <ul>
+            <li>SEO audits for sites of up to 100, 500 or 1,000 URLs</li>
+            <li>On-page and technical fix sprints</li>
+            <li>Local SEO, citations and legitimate listings</li>
+            <li>Monthly SEO growth from $900/month</li>
+          </ul>
+          <span class="link-arrow">Explore SEO services</span>
+        </a>
+        {others.map((f) => (
+          <a class="fam" href={`/services/${f.slug}/`}>
+            <span class="fam__meta"><span>{byFamily(f.name).length} packages</span><span>{familyStartingPrice(f.name)} USD</span></span>
+            <h3>{f.navLabel}</h3>
+            <p>{f.summary}</p>
+            <span class="link-arrow" aria-hidden="true">View packages</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="how-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How we work</p>
+        <h2 id="how-h">Four stages, the same on every project</h2>
+        <p class="muted">Whether you buy a single article or a monthly retainer, the work follows the same pattern, and you know which stage you are in. <a href="/our-approach/">Read our full approach</a>.</p>
+      </div>
+      <Process steps={[
+        { title: "Discovery", body: "A short intake, the access the package needs and a recorded starting point." },
+        { title: "Strategy", body: "Priorities, sequencing and acceptance criteria agreed in writing before delivery starts." },
+        { title: "Execution", body: "Delivery within the stated scope, with work shared for approval at the agreed points." },
+        { title: "Reporting", body: "A handover, change log or monthly report showing what was done and what comes next." },
+      ]} />
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="paths-h">
+    <div class="wrap">
+      <div class="section-head section-head--split">
+        <div>
+          <p class="eyebrow">Where to start</p>
+          <h2 id="paths-h">Three common starting points</h2>
+        </div>
+        <p>Not sure which package fits? These are the usual first steps. Every price is in US dollars and every package page lists its full scope and exclusions.</p>
+      </div>
+      <div class="paths">
+        {paths.map((path) => (
+          <section class="path" aria-label={path.title}>
+            <h3>{path.title}</h3>
+            <p class="muted">{path.body}</p>
+            <ul>
+              {path.ids.map((id) => {
+                const p = byId(id);
+                return (
+                  <li>
+                    <a href={linkTo(id)}>
+                      <span class="path__name">{p.name}</span>
+                      <span class="path__row"><ClassChip pkg={p} /><Price pkg={p} /></span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        ))}
+      </div>
+      <p class="paths__all"><a class="link-arrow" href="/services/">Compare all 50 packages</a></p>
+    </div>
+  </section>
+
+  <section class="section dark founder" aria-labelledby="founder-h">
+    <div class="wrap founder__grid">
+      <div>
+        <p class="eyebrow">Founder-led</p>
+        <h2 id="founder-h">You work with the person accountable for delivery</h2>
+        <p>SEO Booster is led by {site.founder}. Zain scopes every project, is accountable for delivery and brings in vetted specialists where the work needs them, for example a native-language reviewer or a platform-specific ads specialist.</p>
+        <p>That keeps communication direct and the scope honest: if something is outside what we can deliver well, we will say so before you pay.</p>
+        <a class="btn btn--lime" href="/about/">About SEO Booster</a>
+      </div>
+      <div class="founder__panel">
+        <h3>What we will not do</h3>
+        <ul class="nots">
+          <li>Promise rankings, traffic, AI citations, revenue or map positions</li>
+          <li>Sell bought likes, views, followers or reviews</li>
+          <li>Present paid links as editorial endorsements</li>
+          <li>Add third-party costs without your approval</li>
+          <li>Hold your funds or claim ownership of your store or ad accounts</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="faq-h">
+    <div class="wrap faq-grid">
+      <div>
+        <p class="eyebrow">Questions</p>
+        <h2 id="faq-h">Pricing and engagement, answered plainly</h2>
+        <p class="muted">{site.currencyNote} {site.taxNote}</p>
+      </div>
+      <Faq faqs={faqs} />
+    </div>
+  </section>
+
+  <section class="cta-wrap" aria-labelledby="cta-h">
+    <div class="wrap">
+      <div class="cta dark">
+        <div>
+          <h2 id="cta-h">Tell us what you want to improve</h2>
+          <p>Share your website, the service or package you are interested in and what a good result looks like. You will get an honest view of whether we can help and what it would involve.</p>
+        </div>
+        <a class="btn btn--lime" href="/contact-us/">Discuss your project</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding-block: clamp(48px, 6vw, 96px) clamp(64px, 7vw, 112px); }
+  .hero__grid { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr); gap: clamp(40px, 5vw, 80px); align-items: center; }
+  .hero h1 { max-width: 14ch; }
+  .hero .lead { margin-bottom: 32px; }
+  .hero__facts { list-style: none; margin: 40px 0 0; padding: 24px 0 0; border-top: 1px solid var(--border); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; font-size: 0.92rem; color: var(--slate); line-height: 1.4; }
+  .hero__facts strong { display: block; font: 700 1.75rem/1 var(--font-head); color: var(--ink); margin-bottom: 6px; }
+  @media (max-width: 960px) { .hero__grid { grid-template-columns: 1fr; } }
+  @media (max-width: 480px) { .hero__facts { grid-template-columns: 1fr; gap: 14px; } .hero__facts li { display: flex; align-items: baseline; gap: 12px; } .hero__facts strong { font-size: 1.4rem; margin: 0; min-width: 1.6em; } }
+
+  .serp { margin: 0; background: var(--white); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow); padding: 24px; }
+  .serp__query { display: flex; align-items: center; gap: 10px; border: 1px solid var(--border); border-radius: 999px; padding: 10px 16px; color: var(--slate); font-size: 0.95rem; margin-bottom: 22px; }
+  .serp__query svg { flex: none; }
+  .serp__hit { padding: 16px; margin: 0 -16px; border-radius: 12px; background: #fbfdf2; box-shadow: inset 0 0 0 1.5px var(--lime); }
+  .serp__url { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #3b4a5f; margin: 0 0 4px; overflow-wrap: anywhere; }
+  .serp__dot { width: 18px; height: 18px; flex: none; border-radius: 50%; background: var(--paper); border: 1px solid var(--border); }
+  .serp__title { font: 500 1.1rem/1.3 var(--font-body); color: #1a3fb3; margin: 0 0 6px; }
+  .serp__desc { font-size: 0.9rem; color: var(--slate); margin: 0; line-height: 1.5; }
+  .serp__notes { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 12px; font-size: 0.92rem; color: var(--slate); }
+  .serp__notes li { display: grid; grid-template-columns: 5.2em 1fr; gap: 12px; align-items: start; }
+  .tag { display: inline-flex; justify-content: center; font: 600 0.72rem/1 var(--font-body); letter-spacing: 0.05em; text-transform: uppercase; background: var(--ink); color: var(--lime); padding: 6px 8px; border-radius: 6px; }
+  .serp figcaption { margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--border); font-size: 0.8rem; color: var(--slate); }
+
+  .families { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .fam { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 28px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--white); color: var(--ink); text-decoration: none; transition: border-color .15s ease, transform .15s ease; }
+  .fam:hover { border-color: var(--blue); color: var(--ink); text-decoration: none; }
+  .fam h3 { margin: 4px 0 0; font-size: 1.3rem; }
+  .fam p { color: var(--slate); margin: 0; font-size: 0.98rem; }
+  .fam .link-arrow { margin-top: auto; padding-top: 8px; color: var(--blue); }
+  .fam__meta { display: flex; justify-content: space-between; gap: 12px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.03em; color: var(--slate); }
+  .fam--seo { grid-column: 1; grid-row: 1 / span 3; padding: 40px; border-color: var(--ink); background: var(--ink) linear-gradient(160deg, var(--ink) 55%, var(--ink-2)); }
+  .fam--seo:hover { border-color: var(--lime); color: var(--white); }
+  .fam--seo h3 { font-size: 2rem; margin-top: 16px; }
+  .fam--seo p { color: var(--text-on-dark); font-size: 1.02rem; }
+  .fam--seo .fam__meta { color: var(--muted-on-dark); }
+  .fam--seo ul { list-style: none; margin: 18px 0 8px; padding: 18px 0 0; border-top: 1px solid var(--border-dark); display: grid; gap: 10px; color: var(--white); font-size: 0.97rem; }
+  .fam--seo li { display: flex; gap: 10px; }
+  .fam--seo li::before { content: ""; flex: none; width: 10px; height: 10px; margin-top: 0.5em; border-radius: 3px; background: var(--lime); }
+  .fam--seo .link-arrow { color: var(--lime); }
+  @media (max-width: 1023px) { .families { grid-template-columns: repeat(2, minmax(0, 1fr)); } .fam--seo { grid-column: 1 / -1; grid-row: auto; } }
+  @media (max-width: 620px) { .families { grid-template-columns: 1fr; } .fam, .fam--seo { padding: 24px; } .fam--seo h3 { font-size: 1.6rem; } }
+
+  .paths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .path { background: var(--paper); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+  .path h3 { font-size: 1.3rem; margin-bottom: 8px; }
+  .path ul { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 10px; }
+  .path a { display: grid; gap: 8px; padding: 14px 16px; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); text-decoration: none; color: var(--ink); }
+  .path a:hover { border-color: var(--blue); }
+  .path__name { font: 600 1rem/1.3 var(--font-head); }
+  .path__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+  .paths__all { margin: 28px 0 0; }
+  @media (max-width: 960px) { .paths { grid-template-columns: 1fr; } }
+
+  .founder__grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: clamp(40px, 6vw, 96px); align-items: center; }
+  .founder p { max-width: 56ch; }
+  .founder .btn { margin-top: 12px; }
+  .founder__panel { border: 1px solid var(--border-dark); background: var(--ink-2); border-radius: var(--radius); padding: 32px; }
+  .founder__panel h3 { margin-bottom: 18px; }
+  .nots { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .nots li { position: relative; padding-left: 30px; color: var(--text-on-dark); }
+  .nots li::before { content: ""; position: absolute; left: 0; top: 0.3em; width: 18px; height: 18px; border-radius: 5px; border: 1.5px solid var(--muted-on-dark); background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M5 5l6 6M11 5l-6 6' stroke='%23D9F76B' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") center/80% no-repeat; }
+  @media (max-width: 900px) { .founder__grid { grid-template-columns: 1fr; } .founder__panel { padding: 24px; } }
+
+  .faq-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(32px, 6vw, 96px); align-items: start; }
+  @media (max-width: 900px) { .faq-grid { grid-template-columns: 1fr; } }
+
+  .cta-wrap { padding-bottom: var(--section); }
+  .cta { border-radius: 24px; padding: clamp(32px, 5vw, 64px); display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; background: var(--ink) radial-gradient(120% 140% at 100% 100%, #213a6b 0%, transparent 55%); }
+  .cta p { color: var(--text-on-dark); max-width: 60ch; margin: 0; }
+  @media (max-width: 760px) { .cta { grid-template-columns: 1fr; } .cta .btn { width: 100%; } }
+</style>

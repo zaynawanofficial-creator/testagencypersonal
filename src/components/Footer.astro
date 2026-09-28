@@ -1,0 +1,59 @@
+---
+import Logo from "./Logo.astro";
+import { orderedFamilies } from "../data/families";
+import { site } from "../data/site";
+const year = new Date().getFullYear();
+---
+<footer class="site-footer dark">
+  <div class="wrap">
+    <div class="grid">
+      <div class="about">
+        <Logo inverse />
+        <p>SEO, digital marketing, content, websites, design and ecommerce services for SMEs and ecommerce brands. Led by {site.founder}, delivered with vetted specialists.</p>
+        <a class="btn btn--lime btn--sm" href="/contact-us/">Discuss your project</a>
+      </div>
+      <nav aria-labelledby="f-services">
+        <h2 id="f-services">Services</h2>
+        <ul>{orderedFamilies.map((f) => <li><a href={`/services/${f.slug}/`}>{f.navLabel}</a></li>)}</ul>
+      </nav>
+      <nav aria-labelledby="f-company">
+        <h2 id="f-company">SEO Booster</h2>
+        <ul>
+          <li><a href="/services/">All services</a></li>
+          <li><a href="/our-approach/">Our Approach</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/contact-us/">Contact</a></li>
+          {site.insightsVisible && <li><a href="/insights/">Insights</a></li>}
+        </ul>
+      </nav>
+      <div>
+        <h2>Pricing basics</h2>
+        <ul class="facts">
+          <li>{site.currencyNote}</li>
+          <li>Monthly services are billed in advance and run month to month.</li>
+          <li>Third-party costs are client-funded unless included.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <p>© {year} {site.seller}.</p>
+      {site.policiesPublished && (
+        <p><a href="/privacy/">Privacy</a> · <a href="/cookies/">Cookies</a> · <a href="/terms/">Terms</a></p>
+      )}
+    </div>
+  </div>
+</footer>
+<style>
+  .site-footer { padding-block: 72px 28px; font-size: 0.97rem; }
+  .grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr; gap: 40px; }
+  .about p { margin: 20px 0 24px; max-width: 38ch; }
+  h2 { font: 600 0.8125rem/1 var(--font-body); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-on-dark); margin: 8px 0 18px; }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .site-footer a:not(.btn):not(.logo) { color: var(--white); text-decoration: none; }
+  .site-footer a:not(.btn):not(.logo):hover { color: var(--lime); text-decoration: underline; }
+  .facts li { color: var(--text-on-dark); line-height: 1.5; }
+  .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--border-dark); color: var(--muted-on-dark); font-size: 0.9rem; }
+  .legal p { margin: 0; }
+  @media (max-width: 960px) { .grid { grid-template-columns: 1fr 1fr; } .about { grid-column: 1 / -1; } }
+  @media (max-width: 520px) { .grid { grid-template-columns: 1fr; } }
+</style>
