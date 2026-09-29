@@ -17,6 +17,12 @@ Updated 29 Sep 2026. Branch `claude/seobooster-uk-website-m55o9k`. See the commi
 ## States
 - **Built:** yes (13 pages). **Saved:** committed and pushed. **Deployed:** to the preview only (auto-deploy on push; verify the latest build in Hostinger). Production NOT deployed. **Tested:** locally in Chromium (docs/QA.md); deployed pages NOT browser-tested from here. **Approved:** NO.
 
+## Deployments
+| Date | Commit | Hostinger build | Result |
+|---|---|---|---|
+| 28 Sep 2026 | 39e8cbe | 01a0ea1f-20f0-72ca-bae7-ea003b879e93 | completed (first preview) |
+| 29 Sep 2026 | 7449928 | 01a0ea9a-5914-720e-b278-f8b9742438b6 | completed; all build checks passed in the log (visual upgrade) |
+
 ## Resume action
 1. `npm ci && npm run build && npm run preview`, then `npm test` (start `dist-formtest` on :4322 for the form-state tests; see docs/QA.md).
 2. After any push: check the latest Hostinger build (`hosting_nodejs_list-builds` for coral-grouse-990787.hostingersite.com) and its log.
