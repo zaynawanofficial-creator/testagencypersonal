@@ -1,0 +1,40 @@
+---
+// Illustrative excerpt of a deliverable format. Real HTML table; not client data.
+interface Props { title: string; intro: string; columns: string[]; rows: string[][]; slug: string }
+const { title, intro, columns, rows, slug } = Astro.props;
+---
+<section class="dp" aria-labelledby={`dp-${slug}`}>
+  <div class="dp__copy">
+    <p class="eyebrow">What you receive</p>
+    <h2 id={`dp-${slug}`}>{title}</h2>
+    <p class="muted">{intro}</p>
+    <p class="dp__label"><strong>Illustrative example</strong> of the deliverable format, not client data.</p>
+  </div>
+  <div class="dp__doc" role="group" aria-label={title}>
+    <div class="dp__bar" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="dp__scroll" tabindex="0" role="region" aria-label={`${title} (scrollable)`}>
+      <table>
+        <thead><tr>{columns.map((c) => <th scope="col">{c}</th>)}</tr></thead>
+        <tbody>{rows.map((r) => <tr>{r.map((c, i) => (i === 0 ? <th scope="row">{c}</th> : <td>{c}</td>))}</tr>)}</tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<style>
+  .dp { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .dp h2 { font-size: clamp(1.6rem, 1.3rem + 1vw, 2.2rem); }
+  .dp__label { display: inline-block; margin: 8px 0 0; padding: 8px 14px; border-radius: 999px; background: var(--white); border: 1px solid var(--border); font-size: 0.9rem; color: var(--slate); }
+  .dp__label strong { color: var(--ink); }
+  .dp__doc { background: var(--white); border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow); overflow: hidden; }
+  .dp__bar { display: flex; gap: 6px; padding: 14px 18px; background: var(--blue-tint); border-bottom: 1px solid var(--border); }
+  .dp__bar span { width: 10px; height: 10px; border-radius: 50%; background: #aebfe6; }
+  .dp__scroll { overflow-x: auto; }
+  .dp__scroll:focus-visible { outline-offset: -3px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  th, td { text-align: left; padding: 13px 18px; border-top: 1px solid var(--border); vertical-align: top; }
+  thead th { border-top: 0; font: 600 0.78rem/1.2 var(--font-body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); background: var(--white); }
+  tbody th { font-weight: 600; white-space: nowrap; }
+  td { color: #2b3b54; }
+  @media (max-width: 900px) { .dp { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { tbody th { white-space: normal; } th, td { padding: 12px 14px; } }
+</style>

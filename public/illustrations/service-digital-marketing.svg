@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="40" y="60" width="560" height="360" rx="180" fill="#EEF3FF"/>
+  <!-- campaign tiles -->
+  <g stroke="#152541" stroke-width="3">
+    <rect x="88" y="104" width="150" height="96" rx="14" fill="#fff"/>
+    <rect x="104" y="120" width="44" height="44" rx="8" fill="#2456E8"/>
+    <path d="M162 126h58M162 144h42M104 180h116" stroke="#8FA2BF"/>
+    <rect x="72" y="214" width="150" height="96" rx="14" fill="#fff"/>
+    <rect x="88" y="230" width="44" height="44" rx="22" fill="#EEF3FF"/>
+    <path d="M146 236h58M146 254h42M88 290h116" stroke="#8FA2BF"/>
+    <rect x="88" y="324" width="150" height="72" rx="14" fill="#fff"/>
+    <path d="M104 346h100M104 366h72" stroke="#8FA2BF"/>
+  </g>
+  <!-- feeds into network -->
+  <path d="M238 152c60 0 70 88 138 88M222 262h154M238 360c60 0 70-120 138-120" stroke="#152541" stroke-width="3"/>
+  <circle cx="420" cy="240" r="48" fill="#2456E8" stroke="#152541" stroke-width="3"/>
+  <circle cx="420" cy="240" r="18" fill="#fff" stroke="#152541" stroke-width="3"/>
+  <g stroke="#152541" stroke-width="3">
+    <path d="M458 212l62-58M468 240h72M458 268l62 58M420 192v-76"/>
+    <circle cx="530" cy="146" r="22" fill="#fff"/>
+    <circle cx="556" cy="240" r="22" fill="#fff"/>
+    <circle cx="530" cy="334" r="22" fill="#fff"/>
+    <circle cx="420" cy="100" r="22" fill="#fff"/>
+  </g>
+  <circle cx="556" cy="240" r="10" fill="#D9F76B" stroke="#152541" stroke-width="3"/>
+  <path d="M468 240h72" stroke="#D9F76B" stroke-width="6"/>
+</svg>

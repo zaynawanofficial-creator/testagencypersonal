@@ -12,7 +12,7 @@ const OUT = "test-output/shots";
 mkdirSync(OUT, { recursive: true });
 
 const PAGES = ["/", "/services/", "/services/seo/", "/services/digital-marketing/", "/services/content-writing/", "/services/web-design-development/", "/services/website-maintenance/", "/services/graphic-design/", "/services/ecommerce/", "/our-approach/", "/about/", "/contact-us/"];
-const WIDTHS = [360, 390, 768, 1024, 1280, 1536];
+const WIDTHS = [360, 390, 768, 1024, 1280, 1440];
 const results = [];
 let failures = 0;
 const record = (name, ok, detail = "") => { results.push({ name, ok, detail }); if (!ok) failures++; };
@@ -54,7 +54,7 @@ for (const path of PAGES) {
     record(`no band under header ${tag}`, m.gapUnderHeader === 0, `${m.gapUnderHeader}px`);
     record(`fonts rendered (Manrope+Inter) ${tag}`, m.manrope && m.inter, `h1 ${m.h1Font} ${m.h1Size}px`);
     record(`no console errors ${tag}`, errs.length === 0, errs.join(" | "));
-    if (SHOTS && ["/", "/services/seo/", "/contact-us/", "/services/"].includes(path)) {
+    if (SHOTS && ["/", "/services/seo/", "/contact-us/", "/services/", "/services/ecommerce/", "/about/"].includes(path)) {
       await page.screenshot({ path: `${OUT}/${path.replaceAll("/", "_") || "home"}-${w}.png`, fullPage: true });
     }
     await page.close();
@@ -193,6 +193,58 @@ for (const scrollY of [0, 2400]) {
     record("form cleared after success", (await page.inputValue("#f-message")) === "");
   }
   await page.close();
+}
+
+// 5c. Images and illustrations: every image loads, has intrinsic size, decorative ones are silent, informative ones described
+{
+  const bad = [];
+  for (const path of PAGES) {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await page.goto(BASE + path, { waitUntil: "networkidle" });
+    await page.evaluate(async () => { for (const img of document.images) { img.loading = "eager"; } window.scrollTo(0, document.body.scrollHeight); await new Promise((r) => setTimeout(r, 400)); });
+    await page.waitForFunction(() => [...document.images].every((i) => i.complete), null, { timeout: 10000 }).catch(() => {});
+    const r = await page.evaluate(() => [...document.images].map((i) => ({ src: i.getAttribute("src"), ok: i.complete && i.naturalWidth > 0, w: i.getAttribute("width"), h: i.getAttribute("height"), alt: i.getAttribute("alt") })));
+    for (const i of r) {
+      if (!i.ok) bad.push(`${path}: failed to load ${i.src}`);
+      if (!i.w || !i.h) bad.push(`${path}: no intrinsic size ${i.src}`);
+      if (i.alt === null) bad.push(`${path}: missing alt ${i.src}`);
+      if (i.src.includes("example-wallet") && !(i.alt && i.alt.includes("fictional"))) bad.push(`${path}: example image needs a descriptive alt`);
+      if (i.src.includes("/illustrations/service-") && i.alt !== "") bad.push(`${path}: decorative illustration should have empty alt`);
+    }
+    await page.close();
+  }
+  record("all images load with intrinsic size and correct alt handling", bad.length === 0, bad.slice(0, 5).join(" | "));
+  const p2 = await browser.newPage();
+  const og = await p2.goto(BASE + "/og-default.jpg");
+  record("social image served (image/jpeg)", og.status() === 200 && /image\/jpeg/.test(og.headers()["content-type"] || ""), `${og.status()} ${og.headers()["content-type"]}`);
+  await p2.goto(BASE + "/");
+  record("hero artwork is inline, decorative and above the fold", await p2.evaluate(() => { const s = document.querySelector(".hero-art"); return !!s && s.getAttribute("aria-hidden") === "true" && s.getBoundingClientRect().top < innerHeight; }));
+  record("worked example labelled as fictional", /Illustrative example[\s\S]*fictional store, not client results/.test(await p2.textContent("main")));
+  await p2.goto(BASE + "/services/ecommerce/");
+  record("deliverable preview labelled as not client data", /not client data/.test(await p2.textContent("main")));
+  await p2.close();
+}
+
+// 5d. Services hub filter (progressive enhancement)
+{
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await page.goto(BASE + "/services/", { waitUntil: "networkidle" });
+  record("filter visible with JS", await page.isVisible("#pkg-filter"));
+  record("seven family chips link to sections", (await page.$$eval(".chip-link", (a) => a.filter((x) => document.querySelector(x.getAttribute("href"))).length)) === 7);
+  await page.fill("#pkg-filter", "audit");
+  const n = await page.$$eval("[data-row]:not([hidden])", (r) => r.length);
+  record("filter 'audit' narrows rows", n > 0 && n < 50, `${n} rows`);
+  record("filter count announced", /Showing \d+ of 50/.test(await page.textContent("#pkg-count")));
+  await page.fill("#pkg-filter", "zzzz-no-match");
+  record("empty state shown when nothing matches", await page.isVisible("[data-empty]"));
+  await page.click("[data-clear]");
+  record("clear restores all 50 rows", (await page.$$eval("[data-row]:not([hidden])", (r) => r.length)) === 50);
+  await page.close();
+  const ctx = await browser.newContext({ javaScriptEnabled: false });
+  const nj = await ctx.newPage();
+  await nj.goto(BASE + "/services/");
+  record("no-JS: all 50 catalogue rows in HTML, filter hidden", (await nj.$$("[data-row]")).length === 50 && !(await nj.isVisible("#pkg-filter")));
+  await ctx.close();
 }
 
 // 6. No-JS: critical content present in HTML

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="640" height="480" rx="24" fill="#F3EEE6"/>
+  <ellipse cx="320" cy="388" rx="236" ry="26" fill="#DCD2C2"/>
+  <!-- left panel: card slots -->
+  <path d="M96 128c0-12 10-22 22-22h196v268H118c-12 0-22-10-22-22z" fill="#A9652F"/>
+  <path d="M112 124h190v236H124c-7 0-12-5-12-12z" fill="#B97740"/>
+  <path d="M120 166h178M120 206h178M120 246h178" stroke="#8B4F22" stroke-width="3"/>
+  <path d="M120 166c30 10 148 10 178 0M120 206c30 10 148 10 178 0M120 246c30 10 148 10 178 0" fill="#C98A52" stroke="#8B4F22" stroke-width="3"/>
+  <rect x="136" y="142" width="130" height="18" rx="4" fill="#2456E8"/>
+  <rect x="146" y="182" width="120" height="18" rx="4" fill="#E9E2D4"/>
+  <path d="M110 120v238M110 362h198" stroke="#F1CF9F" stroke-width="2.5" stroke-dasharray="6 7"/>
+  <!-- fold -->
+  <path d="M314 106c10 0 14 8 14 20v228c0 12-4 20-14 20" fill="#8B4F22"/>
+  <!-- right panel: zipped coin pocket -->
+  <path d="M326 106h196c12 0 22 10 22 22v224c0 12-10 22-22 22H326z" fill="#A9652F"/>
+  <path d="M338 122h184c7 0 10 4 10 10v216c0 7-4 10-10 10H338z" fill="#B97740"/>
+  <path d="M346 190h176v158H346z" fill="#C98A52"/>
+  <path d="M346 190h176" stroke="#5C3616" stroke-width="7"/>
+  <path d="M346 190h176" stroke="#D9CBB5" stroke-width="3" stroke-dasharray="3 4"/>
+  <rect x="470" y="180" width="16" height="30" rx="5" fill="#D9D2C4" stroke="#5C3616" stroke-width="2.5"/>
+  <circle cx="478" cy="214" r="5" fill="#D9F76B" stroke="#5C3616" stroke-width="2"/>
+  <path d="M340 118v238M340 360h188M528 118v238" stroke="#F1CF9F" stroke-width="2.5" stroke-dasharray="6 7"/>
+  <path d="M358 150h120" stroke="#8B4F22" stroke-width="3"/>
+</svg>

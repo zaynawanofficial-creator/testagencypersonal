@@ -1,0 +1,20 @@
+---
+// Service illustration (original SVG, decorative). Files live in public/illustrations; see docs/ASSETS.md.
+export const ART: Record<string, string> = {
+  seo: "service-seo.svg",
+  "digital-marketing": "service-digital-marketing.svg",
+  "content-writing": "service-content-writing.svg",
+  "web-design-development": "service-web-design.svg",
+  "website-maintenance": "service-maintenance.svg",
+  "graphic-design": "service-graphic-design.svg",
+  ecommerce: "service-ecommerce.svg",
+};
+interface Props { slug: string; eager?: boolean; class?: string; sizes?: string }
+const { slug, eager = false, class: cls } = Astro.props;
+const file = ART[slug];
+if (!file) throw new Error(`No illustration for ${slug}`);
+---
+<img class:list={["service-art", cls]} src={`/illustrations/${file}`} width="640" height="480" alt="" loading={eager ? "eager" : "lazy"} decoding="async" fetchpriority={eager ? "high" : undefined} />
+<style>
+  .service-art { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; }
+</style>

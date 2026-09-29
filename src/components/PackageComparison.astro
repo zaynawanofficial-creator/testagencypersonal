@@ -23,7 +23,7 @@ const rows = ids.map(byId);
         <tr role="row">
           <th role="rowheader" scope="row"><a href={`#${packageAnchor(p)}`}>{p.name}</a></th>
           <td role="cell" data-label="Type"><ClassChip pkg={p} /></td>
-          <td role="cell" data-label="Price"><Price pkg={p} /></td>
+          <td role="cell" data-label="Price"><Price pkg={p} currency={false} /></td>
           <td role="cell" data-label="Best for">{p.clientFit}</td>
           <td role="cell" data-label="Lead time">{p.leadTime}</td>
         </tr>

@@ -1,0 +1,5 @@
+{
+  "_comment": "Environment origins. preview = the approved temporary Hostinger site (auto-deployed from this branch). release = production, used only by scripts/release.mjs after launch approval.",
+  "previewOrigin": "https://coral-grouse-990787.hostingersite.com",
+  "releaseOrigin": "https://seobooster.uk"
+}

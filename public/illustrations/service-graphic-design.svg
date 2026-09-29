@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="60" y="56" width="520" height="368" rx="184" fill="#EEF3FF"/>
+  <!-- composition frame with crop marks -->
+  <rect x="130" y="110" width="250" height="260" rx="6" fill="#fff" stroke="#152541" stroke-width="3"/>
+  <path d="M130 88v-0M108 110h-0M130 80v18M100 110h18M380 80v18M392 110h18M130 382v18M100 370h18M380 382v18M392 370h18" stroke="#152541" stroke-width="3"/>
+  <path d="M213 110v260M297 110v260M130 197h250M130 283h250" stroke="#C7D2E6" stroke-width="2" stroke-dasharray="3 6"/>
+  <!-- coordinated type shapes -->
+  <circle cx="220" cy="210" r="58" fill="#2456E8" stroke="#152541" stroke-width="3"/>
+  <path d="M258 318l52-120 52 120z" fill="#fff" stroke="#152541" stroke-width="3"/>
+  <rect x="160" y="286" width="70" height="56" rx="6" fill="#152541"/>
+  <rect x="286" y="136" width="64" height="44" rx="22" fill="#D9F76B" stroke="#152541" stroke-width="3"/>
+  <!-- colour swatches fan -->
+  <g stroke="#152541" stroke-width="3">
+    <rect x="430" y="150" width="70" height="200" rx="12" fill="#fff" transform="rotate(-18 465 330)"/>
+    <rect x="430" y="150" width="70" height="200" rx="12" fill="#EEF3FF" transform="rotate(-6 465 330)"/>
+    <rect x="430" y="150" width="70" height="200" rx="12" fill="#fff" transform="rotate(8 465 330)"/>
+  </g>
+  <g transform="rotate(8 465 330)" stroke="#152541" stroke-width="3">
+    <rect x="442" y="164" width="46" height="40" rx="6" fill="#152541"/>
+    <rect x="442" y="214" width="46" height="40" rx="6" fill="#2456E8"/>
+    <rect x="442" y="264" width="46" height="40" rx="6" fill="#EEF3FF"/>
+    <circle cx="465" cy="330" r="7" fill="#fff"/>
+  </g>
+</svg>

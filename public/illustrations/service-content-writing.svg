@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <ellipse cx="320" cy="250" rx="250" ry="190" fill="#EEF3FF"/>
+  <!-- back sheet -->
+  <rect x="236" y="70" width="230" height="310" rx="14" fill="#fff" stroke="#152541" stroke-width="3" transform="rotate(6 351 225)"/>
+  <!-- main document -->
+  <rect x="176" y="88" width="250" height="324" rx="14" fill="#fff" stroke="#152541" stroke-width="3"/>
+  <rect x="204" y="120" width="140" height="18" rx="6" fill="#152541"/>
+  <path d="M204 164h194M204 186h176M204 208h188" stroke="#8FA2BF" stroke-width="3"/>
+  <rect x="200" y="226" width="160" height="16" rx="4" fill="#D9F76B"/>
+  <path d="M204 234h152" stroke="#152541" stroke-width="3"/>
+  <path d="M204 260h186M204 282h160M204 316h194M204 338h170M204 360h120" stroke="#8FA2BF" stroke-width="3"/>
+  <!-- margin annotations -->
+  <path d="M440 156c14 0 14 60 0 60M440 300c14 0 14 50 0 50" stroke="#2456E8" stroke-width="4"/>
+  <circle cx="470" cy="186" r="10" fill="#2456E8"/>
+  <circle cx="470" cy="325" r="10" fill="#fff" stroke="#2456E8" stroke-width="4"/>
+  <!-- pen -->
+  <g transform="rotate(38 512 150)">
+    <rect x="496" y="40" width="32" height="170" rx="10" fill="#2456E8" stroke="#152541" stroke-width="3"/>
+    <path d="M496 210l16 38 16-38z" fill="#fff" stroke="#152541" stroke-width="3"/>
+    <path d="M496 72h32" stroke="#152541" stroke-width="3"/>
+  </g>
+</svg>

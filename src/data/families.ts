@@ -7,6 +7,8 @@ export interface Family {
   navLabel: string;
   /** One line for menus and cards. */
   summary: string;
+  /** Benefit-led introduction for service cards. */
+  benefit: string;
   title: string; // <title>
   description: string; // meta description
   h1: string;
@@ -23,6 +25,8 @@ export interface Family {
   related: string[]; // slugs
   /** Starting points highlighted in the hero facts panel. */
   entryIds: number[];
+  /** Illustrative excerpt of a deliverable format (not client data). SEO uses the worked example instead. */
+  example?: { title: string; intro: string; columns: string[]; rows: string[][] };
 }
 
 export const families: Family[] = [
@@ -31,6 +35,7 @@ export const families: Family[] = [
     slug: "seo",
     navLabel: "SEO",
     summary: "Audits, fixes, local SEO, legitimate links and monthly growth work.",
+    benefit: "Find what is holding your site back, fix it in the right order, and build pages that buyers and search engines understand.",
     title: "SEO Services: Audits, Technical Fixes & Monthly SEO | SEO Booster",
     description:
       "Fixed-price SEO audits from $399, on-page and technical fix sprints, local SEO, legitimate listings and outreach, and monthly SEO from $900/month. Clear scope, no ranking guarantees.",
@@ -89,6 +94,7 @@ export const families: Family[] = [
     slug: "digital-marketing",
     navLabel: "Digital Marketing",
     summary: "Growth audits, tracking, paid ads launches, email and monthly marketing.",
+    benefit: "Launch campaigns on the channels that suit your offer, with tracking you can trust from the first day.",
     title: "Digital Marketing Services: Paid Ads, Tracking & Email | SEO Booster",
     description:
       "Digital growth audits, analytics and conversion tracking, paid ads launches on Google, Meta, Microsoft, LinkedIn, TikTok or Pinterest, email foundations and monthly marketing. Prices in USD.",
@@ -133,12 +139,19 @@ export const families: Family[] = [
     ],
     related: ["seo", "graphic-design", "content-writing"],
     entryIds: [1, 3, 7],
+    example: {
+      title: "Excerpt from a tracking test report",
+      intro: "Analytics & Conversion Tracking Setup ends with a test report. Each agreed event is checked in debug mode.",
+      columns: ["Agreed event", "Trigger", "Fires once", "Parameters"],
+      rows: [["generate_lead", "Contact form submitted", "Yes", "form_name, page"], ["begin_checkout", "Checkout started", "Yes", "value, currency"], ["phone_click", "Tap on phone link", "Yes", "link_url"]],
+    },
   },
   {
     name: "Content Writing",
     slug: "content-writing",
     navLabel: "Content Writing",
     summary: "Articles, guides, service pages, website, product and email copy.",
+    benefit: "Clear, original copy that answers what buyers ask, with a fixed word count, price and revision limit.",
     title: "Content Writing Services: SEO Articles, Web & Product Copy | SEO Booster",
     description:
       "Researched SEO articles from $179, long-form guides, service pages, website copy sets, product and category copy, email sequences, social captions and localisation by proposal.",
@@ -174,12 +187,19 @@ export const families: Family[] = [
     ],
     related: ["seo", "web-design-development", "ecommerce"],
     entryIds: [19, 21, 22],
+    example: {
+      title: "Excerpt from an article brief",
+      intro: "Every SEO Blog Article starts with a search-intent brief you approve before drafting.",
+      columns: ["Brief field", "What it contains"],
+      rows: [["Search intent", "What the reader wants to find out or do"], ["Audience", "Who the article is for and what they already know"], ["Outline", "Proposed headings in order"], ["Internal links", "Up to 3 suggested pages on your site"], ["Sources", "Where material factual claims come from"]],
+    },
   },
   {
     name: "Web Design & Development",
     slug: "web-design-development",
     navLabel: "Web Design & Development",
     summary: "UI design, landing pages and WordPress websites.",
+    benefit: "WordPress websites and landing pages that explain your offer quickly and work on every screen.",
     title: "Web Design & Development: WordPress Websites & Landing Pages | SEO Booster",
     description:
       "Landing page and website UI design, landing page design and build, WordPress business websites from $1,699, growth websites and custom development by proposal. Design-only and design-and-build options.",
@@ -215,12 +235,19 @@ export const families: Family[] = [
     ],
     related: ["website-maintenance", "content-writing", "seo"],
     entryIds: [28, 31, 33],
+    example: {
+      title: "Excerpt from a launch checklist",
+      intro: "WordPress websites are checked against a written launch checklist before go-live.",
+      columns: ["Check", "What is tested"],
+      rows: [["Pages and menu", "Every agreed page loads and is reachable from the menu"], ["Contact form", "Test submission received at the agreed address"], ["Responsive layouts", "Desktop, tablet and mobile reviewed"], ["Indexing controls", "Correct settings for staging and live"], ["Analytics", "Connection confirmed"]],
+    },
   },
   {
     name: "Website Maintenance",
     slug: "website-maintenance",
     navLabel: "Website Maintenance",
     summary: "Monthly care plans for WordPress and Shopify sites.",
+    benefit: "Routine updates, checked backups and small edits handled for a fixed monthly fee.",
     title: "Website Maintenance Plans for WordPress & Shopify | SEO Booster",
     description:
       "Monthly website care from $129/month: updates, backup verification, uptime and security checks, reporting and a set allowance of small edits. Month to month, seven days' notice.",
@@ -248,12 +275,19 @@ export const families: Family[] = [
     ],
     related: ["web-design-development", "seo", "ecommerce"],
     entryIds: [34, 35, 36],
+    example: {
+      title: "Excerpt from a monthly care log",
+      intro: "Each month you receive a log of checks, updates, backups and edit time used.",
+      columns: ["Item", "What the log records"],
+      rows: [["Updates", "Core, theme and plugin or app updates reviewed and applied"], ["Backups", "Backup verification, where supported"], ["Uptime and security", "Checks carried out and anything found"], ["Edit time", "Small edits completed and time used against the allowance"]],
+    },
   },
   {
     name: "Graphic Design",
     slug: "graphic-design",
     navLabel: "Graphic Design",
     summary: "Logos, brand identity, social, ad, website and print-ready collateral files.",
+    benefit: "A consistent look across your logo, social posts, ads and website graphics, delivered as ready-to-use files.",
     title: "Graphic Design Services: Logos, Brand Identity & Ad Creative | SEO Booster",
     description:
       "Logo design from $299, brand identity systems, social media and advertising creative packs, website graphics and business collateral files. Fixed counts, formats and revision rounds.",
@@ -280,12 +314,19 @@ export const families: Family[] = [
     faqs: [{ q: "Do you print business cards or brochures?", a: "No. Graphic design packages supply print-ready and digital files; printing is arranged by you." }],
     related: ["digital-marketing", "web-design-development", "content-writing"],
     entryIds: [37, 38, 40],
+    example: {
+      title: "Excerpt from a logo file handover",
+      intro: "Logo Essentials is delivered as a checked set of files and a simple usage sheet.",
+      columns: ["File", "Formats"],
+      rows: [["Primary logo", "SVG, PDF, PNG, JPG"], ["Secondary lockup", "SVG, PDF, PNG, JPG"], ["Monochrome version", "SVG, PDF, PNG"], ["Usage sheet", "PDF"]],
+    },
   },
   {
     name: "eCommerce Services",
     slug: "ecommerce",
     navLabel: "eCommerce Services",
     summary: "Shopify and WooCommerce stores, catalogues, CRO and store operations.",
+    benefit: "Launch or improve a Shopify or WooCommerce store, from catalogue set-up to the checkout journey.",
     title: "Shopify & WooCommerce Services: Store Builds, Catalogues & CRO | SEO Booster",
     description:
       "Shopify or WooCommerce store launches from $2,499, catalogue setup and optimisation for 25 products, ecommerce CRO audits, product research and managed store operations. You remain merchant of record.",
@@ -317,6 +358,12 @@ export const families: Family[] = [
     ],
     related: ["seo", "content-writing", "graphic-design"],
     entryIds: [43, 45, 47],
+    example: {
+      title: "Excerpt from a catalogue completion sheet",
+      intro: "Catalogue Setup ends with a completion sheet matched against your source spreadsheet.",
+      columns: ["Field", "Checked against your sheet"],
+      rows: [["Title and description", "Supplied text entered unchanged"], ["Price and SKU", "Matches the source row"], ["Images", "Supplied images attached in order"], ["Collection or category", "Assigned as agreed"], ["Variants", "Created within the agreed simple limit"]],
+    },
   },
 ];
 

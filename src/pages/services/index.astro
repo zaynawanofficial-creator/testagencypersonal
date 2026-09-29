@@ -1,9 +1,9 @@
 ---
 import Base from "../../layouts/Base.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
-import ClassChip from "../../components/ClassChip.astro";
+import ServiceArt from "../../components/ServiceArt.astro";
 import Price from "../../components/Price.astro";
-import { byFamily, familyStartingPrice, packageAnchor } from "../../data/catalogue";
+import { byFamily, classLabel, familyStartingPrice, packageAnchor } from "../../data/catalogue";
 import { orderedFamilies } from "../../data/families";
 import { site } from "../../data/site";
 const crumbs = [{ name: "Home", path: "/" }, { name: "Services", path: "/services/" }];
@@ -16,20 +16,27 @@ const crumbs = [{ name: "Home", path: "/" }, { name: "Services", path: "/service
   <section class="phero">
     <div class="wrap">
       <Breadcrumbs items={crumbs} />
-      <p class="eyebrow">Services</p>
-      <h1>Digital marketing and SEO services, priced in the open</h1>
-      <p class="lead">Seven service areas and 50 packages. Each one states its price, what is included, what is excluded, what we need from you and how long it takes. {site.currencyNote}</p>
+      <div class="phero__grid">
+        <div>
+          <p class="eyebrow">Services</p>
+          <h1>Digital marketing and SEO services, priced in the open</h1>
+          <p class="lead">Seven service areas and 50 packages. Each one states its price, what is included and excluded, what we need from you and how long it takes. {site.currencyNote}</p>
+        </div>
+        <div class="mosaic" aria-hidden="true">
+          {orderedFamilies.map((f, i) => (<div class:list={["mosaic__tile", { "mosaic__tile--lg": i === 0 }]}><ServiceArt slug={f.slug} eager={i < 3} /></div>))}
+        </div>
+      </div>
+      <nav class="chips" aria-label="Jump to a service area">
+        {orderedFamilies.map((f) => <a class="chip-link" href={`#fam-${f.slug}`}>{f.navLabel}</a>)}
+      </nav>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="models-h">
+  <section class="section section--tight" aria-labelledby="models-h">
     <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">How pricing works</p>
-        <h2 id="models-h">Three ways to work with us</h2>
-      </div>
+      <h2 id="models-h" class="models-h">Three ways to work with us</h2>
       <div class="models">
-        <div class="model"><span class="chip chip--fixed">Fixed scope</span><h3>Fixed-scope packages</h3><p>A defined deliverable for a set price, paid in full. The scope, lead time and revision limit are written on the package.</p></div>
+        <div class="model"><span class="chip chip--fixed">Fixed scope</span><h3>Fixed-scope packages</h3><p>A defined deliverable for a set price, paid in full. Scope, lead time and revision limit are written on the package.</p></div>
         <div class="model"><span class="chip chip--proposal">By proposal</span><h3>Bespoke projects</h3><p>Work that depends on size or complexity. The "from" price is a starting point; you receive a written proposal with milestone payments.</p></div>
         <div class="model"><span class="chip chip--monthly">Monthly</span><h3>Ongoing engagements</h3><p>Paid in advance, month to month. Cancel at least seven days before the next billing period.</p></div>
       </div>
@@ -37,40 +44,53 @@ const crumbs = [{ name: "Home", path: "/" }, { name: "Services", path: "/service
     </div>
   </section>
 
-  <section class="section section--white" aria-labelledby="all-h">
+  <section class="section section--white catalogue" aria-labelledby="all-h">
     <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">All packages</p>
-        <h2 id="all-h">Browse by service area</h2>
+      <div class="cat-head">
+        <div>
+          <p class="eyebrow">All packages</p>
+          <h2 id="all-h">The full catalogue</h2>
+          <p class="muted">All prices in US dollars (USD). "From" prices and service fees are stated exactly as approved.</p>
+        </div>
+        <div class="filter" data-filter hidden>
+          <label for="pkg-filter">Filter packages</label>
+          <input class="input" id="pkg-filter" type="search" placeholder="For example: audit, Shopify, monthly" autocomplete="off" aria-describedby="pkg-count" />
+          <p id="pkg-count" class="small muted" role="status" aria-live="polite">Showing all 50 packages.</p>
+        </div>
       </div>
-      <div class="fams">
-        {orderedFamilies.map((f) => (
-          <section class="fam" aria-labelledby={`fam-${f.slug}`}>
-            <div class="fam__head">
-              <div>
-                <h3 id={`fam-${f.slug}`}><a href={`/services/${f.slug}/`}>{f.navLabel}</a></h3>
-                <p class="muted">{f.summary}</p>
-              </div>
-              <p class="fam__from">{familyStartingPrice(f.name)} <abbr title="US dollars">USD</abbr></p>
+      <p class="empty" data-empty hidden>No packages match that filter. <button type="button" class="linkish" data-clear>Clear the filter</button> to see all 50.</p>
+
+      {orderedFamilies.map((f) => (
+        <section class="fam" id={`fam-${f.slug}`} aria-labelledby={`fam-${f.slug}-h`} data-fam>
+          <div class="fam__head">
+            <span class="fam__motif" aria-hidden="true"><ServiceArt slug={f.slug} /></span>
+            <div class="fam__title">
+              <h3 id={`fam-${f.slug}-h`}><a href={`/services/${f.slug}/`}>{f.navLabel}</a></h3>
+              <p>{f.summary}</p>
             </div>
-            <ul class="fam__list">
-              {byFamily(f.name).map((p) => (
-                <li>
+            <p class="fam__from">{familyStartingPrice(f.name)}</p>
+          </div>
+          <ul class="rows">
+            {byFamily(f.name).map((p) => (
+              <li data-row data-text={`${p.name} ${p.clientFit} ${classLabel[p.classification]} ${f.navLabel} ${p.displayPrice}`.toLowerCase()}>
+                <div class="row__main">
                   <a href={`/services/${f.slug}/#${packageAnchor(p)}`}>{p.name}</a>
-                  <span class="fam__row"><ClassChip pkg={p} /><Price pkg={p} /></span>
-                </li>
-              ))}
-            </ul>
-            <a class="link-arrow" href={`/services/${f.slug}/`}>Full {f.navLabel} details</a>
-          </section>
-        ))}
-      </div>
+                  <span class="row__fit">{p.clientFit}</span>
+                </div>
+                <span class="row__type">{classLabel[p.classification]}</span>
+                <Price pkg={p} currency={false} />
+              </li>
+            ))}
+          </ul>
+          <a class="link-arrow fam__more" href={`/services/${f.slug}/`}>Full {f.navLabel} details</a>
+        </section>
+      ))}
     </div>
   </section>
 
   <section class="section">
     <div class="wrap">
-      <div class="cta dark">
+      <div class="cta field-cobalt">
         <div>
           <h2>Need more than one service?</h2>
           <p>Many projects combine an audit, a build and ongoing support. Tell us what you are trying to achieve and we will suggest a sensible order.</p>
@@ -80,36 +100,88 @@ const crumbs = [{ name: "Home", path: "/" }, { name: "Services", path: "/service
     </div>
   </section>
 </Base>
+
+<script>
+  // Progressive enhancement: the full catalogue is always in the HTML; the filter only hides rows.
+  const box = document.querySelector<HTMLElement>("[data-filter]")!;
+  const input = document.getElementById("pkg-filter") as HTMLInputElement;
+  const count = document.getElementById("pkg-count")!;
+  const empty = document.querySelector<HTMLElement>("[data-empty]")!;
+  const rows = [...document.querySelectorAll<HTMLElement>("[data-row]")];
+  const fams = [...document.querySelectorAll<HTMLElement>("[data-fam]")];
+  box.hidden = false;
+  const apply = () => {
+    const terms = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    let shown = 0;
+    rows.forEach((r) => { const ok = terms.every((t) => r.dataset.text!.includes(t)); r.hidden = !ok; if (ok) shown++; });
+    fams.forEach((f) => { f.hidden = !f.querySelector("[data-row]:not([hidden])"); });
+    empty.hidden = shown !== 0;
+    count.textContent = terms.length ? `Showing ${shown} of ${rows.length} packages.` : `Showing all ${rows.length} packages.`;
+  };
+  input.addEventListener("input", apply);
+  document.querySelector("[data-clear]")!.addEventListener("click", () => { input.value = ""; apply(); input.focus(); });
+</script>
+
 <style>
-  .phero { background: var(--white); border-bottom: 1px solid var(--border); padding-block: 32px clamp(48px, 5vw, 80px); }
+  .phero { background: var(--white); border-bottom: 1px solid var(--border); padding-block: 32px clamp(32px, 4vw, 48px); }
+  .phero__grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: clamp(32px, 5vw, 64px); align-items: center; }
   .phero h1 { max-width: 18ch; }
+  .mosaic { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+  .mosaic__tile { background: var(--blue-tint); border-radius: 14px; padding: 6px; }
+  .mosaic__tile--lg { grid-row: span 3; display: flex; align-items: center; padding: 14px; }
+  .mosaic__tile--lg :global(img) { width: 100%; min-width: 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; }
+  .chip-link { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 16px; border: 1px solid var(--border); border-radius: 999px; background: var(--paper); color: var(--ink); text-decoration: none; font-weight: 500; font-size: 0.95rem; }
+  .chip-link:hover { border-color: var(--blue); color: var(--blue); }
+  @media (max-width: 900px) { .phero__grid { grid-template-columns: 1fr; } .mosaic { max-width: 440px; } }
+
+  .section--tight { padding-block: clamp(40px, 4vw, 64px); }
+  .models-h { font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.8rem); margin-bottom: 20px; }
   .models { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-  .model { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
-  .model h3 { margin: 16px 0 8px; }
-  .model p { color: var(--slate); margin: 0; }
-  .notes { margin: 24px 0 0; max-width: 80ch; }
+  .model { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+  .model h3 { margin: 14px 0 6px; font-size: 1.15rem; }
+  .model p { color: var(--slate); margin: 0; font-size: 0.97rem; }
+  .notes { margin: 20px 0 0; max-width: 80ch; }
   @media (max-width: 860px) { .models { grid-template-columns: 1fr; } }
-  .fams { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
-  .fam { border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; background: var(--paper); }
-  /* SEO spans both columns; the other six form three even rows (no orphaned card). */
-  .fam:first-child { grid-column: 1 / -1; }
-  .fam:first-child .fam__list { columns: 2; column-gap: 40px; }
-  .fam:first-child .fam__list li { break-inside: avoid; }
-  .fam__head { display: flex; justify-content: space-between; gap: 16px; align-items: start; margin-bottom: 16px; }
-  .fam h3 { margin-bottom: 6px; font-size: 1.4rem; }
-  .fam h3 a { color: var(--ink); text-decoration: none; }
-  .fam h3 a:hover { color: var(--blue); text-decoration: underline; }
-  .fam__head p { margin: 0; font-size: 0.97rem; }
-  .fam__from { font: 700 0.95rem/1.2 var(--font-head); white-space: nowrap; background: var(--lime); padding: 6px 10px; border-radius: 999px; color: var(--ink) !important; }
-  .fam__from abbr { text-decoration: none; font-size: 0.75rem; }
-  .fam__list { list-style: none; margin: 0 0 18px; padding: 0; border-top: 1px solid var(--border); }
-  .fam__list li { display: flex; justify-content: space-between; align-items: center; gap: 8px 16px; flex-wrap: wrap; padding: 12px 0; border-bottom: 1px solid var(--border); }
-  .fam__list a { font-weight: 600; color: var(--ink); text-decoration: none; }
-  .fam__list a:hover { color: var(--blue); text-decoration: underline; }
-  .fam__row { display: inline-flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-  @media (max-width: 960px) { .fams { grid-template-columns: 1fr; } .fam:first-child .fam__list { columns: 1; } }
-  @media (max-width: 480px) { .fam { padding: 20px; } .fam__head { flex-direction: column; } }
-  .cta { border-radius: 24px; padding: clamp(32px, 5vw, 56px); display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; background: var(--ink) radial-gradient(120% 140% at 100% 100%, #213a6b 0%, transparent 55%); }
-  .cta p { color: var(--text-on-dark); max-width: 60ch; margin: 0; }
+
+  .cat-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 380px); gap: 24px 48px; align-items: end; margin-bottom: 40px; }
+  .cat-head p:last-child { margin-bottom: 0; }
+  .filter { display: grid; gap: 6px; }
+  .filter[hidden], .empty[hidden] { display: none; }
+  .filter label { font-weight: 600; font-size: 0.95rem; }
+  .filter p { margin: 0; }
+  .empty { padding: 20px; border: 1px dashed var(--border); border-radius: var(--radius); text-align: center; color: var(--slate); }
+  .linkish { background: none; border: 0; padding: 0; font: inherit; color: var(--blue); text-decoration: underline; cursor: pointer; min-height: 44px; }
+  @media (max-width: 860px) { .cat-head { grid-template-columns: 1fr; } }
+
+  .fam { scroll-margin-top: calc(var(--header-h) + 16px); }
+  .fam + .fam { margin-top: 56px; }
+  .fam__head { display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; gap: 18px; align-items: center; padding-bottom: 16px; border-bottom: 2px solid var(--ink); }
+  .fam__motif { width: 76px; border-radius: 14px; background: var(--blue-tint); overflow: hidden; }
+  .fam__title h3 { margin: 0 0 4px; font-size: 1.4rem; }
+  .fam__title h3 a { color: var(--ink); text-decoration: none; }
+  .fam__title h3 a:hover { color: var(--blue); text-decoration: underline; }
+  .fam__title p { margin: 0; color: var(--slate); font-size: 0.95rem; }
+  .fam__from { margin: 0; font: 700 0.95rem/1.2 var(--font-head); white-space: nowrap; background: var(--lime); padding: 8px 12px; border-radius: 999px; }
+  .rows { list-style: none; margin: 0; padding: 0; }
+  .rows li { display: grid; grid-template-columns: minmax(0, 1fr) 7.5em 11em; gap: 8px 24px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .rows li[hidden] { display: none; }
+  .row__main { display: grid; gap: 2px; }
+  .row__main a { font: 600 1.02rem/1.35 var(--font-head); color: var(--ink); text-decoration: none; }
+  .row__main a:hover { color: var(--blue); text-decoration: underline; }
+  .row__fit { font-size: 0.9rem; color: var(--slate); line-height: 1.45; }
+  .row__type { font-size: 0.85rem; font-weight: 600; color: var(--slate); }
+  .rows li > :last-child { justify-self: end; text-align: right; }
+  .fam__more { display: inline-flex; margin-top: 16px; }
+  @media (max-width: 700px) {
+    .fam__head { grid-template-columns: 56px minmax(0, 1fr); }
+    .fam__motif { width: 56px; }
+    .fam__from { grid-column: 1 / -1; justify-self: start; }
+    .rows li { grid-template-columns: minmax(0, 1fr) auto; }
+    .row__main { grid-column: 1 / -1; }
+    .rows li > :last-child { justify-self: end; }
+  }
+  .cta { border-radius: 24px; padding: clamp(32px, 5vw, 56px); display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
+  .cta p { color: #dfe7f8; max-width: 60ch; margin: 0; }
   @media (max-width: 760px) { .cta { grid-template-columns: 1fr; } .cta .btn { width: 100%; } }
 </style>

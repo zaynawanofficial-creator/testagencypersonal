@@ -15,7 +15,8 @@
   --blue-on-dark: #a9c1ff;
   --lime: #d9f76b;
   --lime-hover: #cbee4c;
-  --paper: #f7f9fc;
+  --paper: #faf9f6;   /* warm paper: main reading surfaces */
+  --blue-tint: #eef3ff; /* service graphics, supporting sections */
   --white: #ffffff;
   --slate: #4a5b70;
   --border: #dde5ef;
@@ -38,7 +39,7 @@
   --fs-h1: clamp(2.375rem, 1.7rem + 2.6vw, 3.75rem);   /* 38 -> 60px */
 
   --s1: 8px; --s2: 16px; --s3: 24px; --s4: 32px; --s5: 48px; --s6: 64px; --s7: 96px;
-  --section: clamp(64px, 5vw + 40px, 112px);
+  --section: clamp(48px, 4vw + 32px, 104px);
   --radius: 16px;
   --radius-sm: 10px;
   --wrap: 1200px;
@@ -87,6 +88,12 @@ a:hover { color: var(--blue-hover); text-decoration-thickness: 2px; }
 .visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .skip-link { position: absolute; left: 16px; top: -200px; z-index: 200; background: var(--ink); color: var(--white); padding: 12px 16px; border-radius: var(--radius-sm); font-weight: 600; }
 .skip-link:focus { top: 16px; color: var(--white); }
+
+/* Cobalt field: hero and closing CTA */
+.field-cobalt { background: linear-gradient(135deg, #152541 0%, #1b3a8f 58%, #2456e8 100%); color: #e6ecfa; }
+.field-cobalt h1, .field-cobalt h2, .field-cobalt h3 { color: var(--white); }
+.field-cobalt :focus-visible { outline-color: var(--lime); }
+.section--tint { background: var(--blue-tint); }
 
 /* Dark accent surfaces */
 .dark { background: var(--ink); color: var(--text-on-dark); }

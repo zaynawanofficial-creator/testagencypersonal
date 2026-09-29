@@ -6,6 +6,9 @@ const b = await chromium.launch();
 const p = await b.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
 await p.goto((process.env.BASE_URL || "http://localhost:4321") + path, { waitUntil: "networkidle" });
 await p.evaluate(() => document.fonts.ready);
+// Scroll through once so lazy-loaded images below the fold load before capture.
+await p.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 600) { scrollTo(0, y); await new Promise((r) => setTimeout(r, 60)); } scrollTo(0, 0); });
+await p.waitForFunction(() => [...document.images].every((i) => i.complete));
 const total = await p.evaluate(() => document.documentElement.scrollHeight);
 let i = 0;
 for (let y = 0; y < total; y += height) {

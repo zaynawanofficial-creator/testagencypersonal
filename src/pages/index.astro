@@ -1,18 +1,21 @@
 ---
 import Base from "../layouts/Base.astro";
+import HeroArt from "../components/HeroArt.astro";
+import BrandArt from "../components/BrandArt.astro";
+import ServiceArt from "../components/ServiceArt.astro";
+import WorkedExample from "../components/WorkedExample.astro";
 import Process from "../components/Process.astro";
 import Faq from "../components/Faq.astro";
 import Price from "../components/Price.astro";
-import ClassChip from "../components/ClassChip.astro";
-import { byFamily, byId, familyStartingPrice, packageAnchor } from "../data/catalogue";
+import { byFamily, byId, classLabel, familyStartingPrice, packageAnchor } from "../data/catalogue";
 import { familyByName, orderedFamilies } from "../data/families";
 import { site } from "../data/site";
 
 const [seo, ...others] = orderedFamilies;
 const paths = [
-  { title: "Diagnose first", body: "A fixed-price audit tells you what to fix, in what order, before you commit to bigger spend.", ids: [8, 1, 47] },
-  { title: "Build or rebuild", body: "Websites and stores with a defined page or product count, tested before launch.", ids: [31, 43, 30] },
-  { title: "Ongoing support", body: "Monthly work against agreed priorities. Billed in advance, month to month.", ids: [14, 34, 7] },
+  { title: "Diagnose first", body: "A fixed-price audit tells you what to fix, and in what order, before bigger spend.", slug: "seo", ids: [8, 1, 47] },
+  { title: "Build or rebuild", body: "Websites and stores with a defined page or product count, tested before launch.", slug: "web-design-development", ids: [31, 43, 30] },
+  { title: "Ongoing support", body: "Monthly work against agreed priorities, billed in advance, month to month.", slug: "website-maintenance", ids: [14, 34, 7] },
 ];
 const linkTo = (id: number) => `/services/${familyByName(byId(id).family).slug}/#${packageAnchor(byId(id))}`;
 const faqs = [
@@ -21,7 +24,9 @@ const faqs = [
   { q: "How do monthly services work?", a: "Monthly services are paid in advance and run month to month. To stop, give at least seven days' notice before the next billing period." },
   { q: "How many revisions do I get?", a: "Usually one or two consolidated rounds. The exact limit is written on each package and takes priority." },
   { q: "When does work start?", a: "Lead times are listed on every package and start once we have the inputs and access that package needs." },
-  { q: "Do you guarantee rankings, traffic or sales?", a: "No. We commit to the scope, the reasoning behind it and clear reporting. Search engines, platforms and markets are outside anyone's control." },
+  { q: "Do you guarantee rankings, traffic or sales?", a: "No. Search engines, platforms and markets are outside anyone's control, so we do not promise rankings, traffic, AI citations, map positions or revenue. We commit to the agreed scope, the reasoning behind it and clear reporting." },
+  { q: "Do you sell likes, followers, reviews or paid links?", a: "No. We do not sell bought likes, views, followers or reviews, and we never present paid links as editorial endorsements. Any paid placement needs your approval of the cost and is disclosed in line with current guidance." },
+  { q: "Who owns the accounts and the store?", a: "You do. Ad accounts, analytics and stores stay in your name. For ecommerce work you remain the merchant of record; we do not hold client funds or buy inventory." },
   { q: "Which platforms do you work with?", a: "WordPress, WooCommerce and Shopify as standard. Other technologies are available by proposal." },
 ];
 const schema = [
@@ -34,89 +39,86 @@ const schema = [
   description="Founder-led SEO, digital marketing, content, web design, maintenance, graphic design and ecommerce services. Published USD prices, written scope and clear exclusions. No ranking guarantees."
   schema={schema}
 >
-  <section class="hero" aria-labelledby="hero-h">
+  <section class="hero field-cobalt" aria-labelledby="hero-h">
     <div class="wrap hero__grid">
       <div class="hero__copy">
-        <p class="eyebrow">SEO-led agency for SMEs and ecommerce brands</p>
-        <h1 id="hero-h">Get found by the customers <span class="hl">already searching</span> for you</h1>
-        <p class="lead">SEO Booster offers SEO, digital marketing, content, websites, design and ecommerce services. Every package has a published price, a written scope and clear limits, so you know what you are buying before work starts.</p>
+        <p class="eyebrow eyebrow--dark">SEO-led agency for SMEs and ecommerce brands</p>
+        <h1 id="hero-h">Get found by the customers <span class="uline">already searching</span> for you</h1>
+        <p class="hero__lead">SEO, digital marketing, content, websites, design and ecommerce services. Every package has a published price, a written scope and clear limits.</p>
         <div class="btn-row">
-          <a class="btn btn--primary" href="/contact-us/">Discuss your project</a>
-          <a class="btn btn--secondary" href="/services/seo/">Explore SEO services</a>
+          <a class="btn btn--lime" href="/contact-us/">Discuss your project</a>
+          <a class="btn btn--ghost-dark" href="/services/seo/">Explore SEO services</a>
         </div>
-        <ul class="hero__facts" aria-label="How we work">
-          <li><strong>50</strong> packages with published USD prices</li>
-          <li><strong>7</strong> service areas, one accountable lead</li>
-          <li><strong>0</strong> ranking guarantees, by design</li>
-        </ul>
       </div>
-
-      <figure class="serp" aria-labelledby="serp-cap">
-        <div class="serp__query" aria-hidden="true">
-          <svg viewBox="0 0 16 16" width="16" height="16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-          <span>handmade leather wallet with coin pocket</span>
-        </div>
-        <div class="serp__hit">
-          <p class="serp__url"><span class="serp__dot" aria-hidden="true"></span>example-leathergoods.com › wallets › coin-pocket</p>
-          <p class="serp__title">Handmade Leather Wallet with Coin Pocket · 30-Day Returns</p>
-          <p class="serp__desc">Full-grain leather, hand-stitched, 8 card slots and a zipped coin pocket. Ships worldwide. See sizes and colours.</p>
-        </div>
-        <ol class="serp__notes">
-          <li><span class="tag">Intent</span> A product page that answers this exact search, not a generic category.</li>
-          <li><span class="tag">Title</span> The words the buyer used, plus a real reason to click.</li>
-          <li><span class="tag">Detail</span> Specific, checkable facts instead of vague claims.</li>
-        </ol>
-        <figcaption id="serp-cap">Illustration using a fictional store. It shows what on-page SEO work changes in a search listing; it is not client data.</figcaption>
-      </figure>
+      <div class="hero__art"><HeroArt /></div>
     </div>
   </section>
 
-  <section class="section section--white" aria-labelledby="svc-h">
+  <section class="strip" aria-label="SEO Booster at a glance">
+    <ul class="wrap strip__list">
+      <li><strong>50 approved packages</strong><span>with published USD prices</span></li>
+      <li><strong>7 service areas</strong><span>planned to work together</span></li>
+      <li><strong>Founder-led delivery</strong><span>with vetted specialists</span></li>
+    </ul>
+  </section>
+
+  <section class="section" aria-labelledby="svc-h">
     <div class="wrap">
       <div class="section-head section-head--split">
         <div>
           <p class="eyebrow">Services</p>
-          <h2 id="svc-h">Seven service areas, planned to work together</h2>
+          <h2 id="svc-h">Seven service areas, one plan</h2>
         </div>
-        <p>SEO is our core strength. The other six cover what search traffic lands on and what turns it into enquiries and sales: the website, the words, the visuals, the store and the paid channels around it.</p>
+        <p>SEO is our core strength. The other six cover what search traffic lands on and what turns it into enquiries and sales.</p>
       </div>
-      <div class="families">
-        <a class="fam fam--seo dark" href={`/services/${seo.slug}/`}>
-          <span class="fam__meta"><span>{byFamily(seo.name).length} packages</span><span>{familyStartingPrice(seo.name)} USD</span></span>
-          <h3>{seo.navLabel}</h3>
-          <p>{seo.lede}</p>
+
+      <a class="seo-card" href={`/services/${seo.slug}/`}>
+        <div class="seo-card__copy">
+          <p class="seo-card__meta">{byFamily(seo.name).length} packages · {familyStartingPrice(seo.name)} USD</p>
+          <h3>SEO services</h3>
+          <p>{seo.benefit}</p>
           <ul>
-            <li>SEO audits for sites of up to 100, 500 or 1,000 URLs</li>
+            <li>Audits for sites of up to 100, 500 or 1,000 URLs</li>
             <li>On-page and technical fix sprints</li>
             <li>Local SEO, citations and legitimate listings</li>
             <li>Monthly SEO growth from $900/month</li>
           </ul>
           <span class="link-arrow">Explore SEO services</span>
-        </a>
+        </div>
+        <div class="seo-card__art"><ServiceArt slug="seo" /></div>
+      </a>
+
+      <div class="svc-grid">
         {others.map((f) => (
-          <a class="fam" href={`/services/${f.slug}/`}>
-            <span class="fam__meta"><span>{byFamily(f.name).length} packages</span><span>{familyStartingPrice(f.name)} USD</span></span>
-            <h3>{f.navLabel}</h3>
-            <p>{f.summary}</p>
-            <span class="link-arrow" aria-hidden="true">View packages</span>
+          <a class="svc" href={`/services/${f.slug}/`}>
+            <div class="svc__art"><ServiceArt slug={f.slug} /></div>
+            <div class="svc__body">
+              <h3>{f.navLabel}</h3>
+              <p>{f.benefit}</p>
+              <p class="svc__meta"><span>{familyStartingPrice(f.name)} USD</span><span class="link-arrow" aria-hidden="true">View packages</span></p>
+            </div>
           </a>
         ))}
       </div>
     </div>
   </section>
 
+  <div class="section section--white">
+    <div class="wrap"><WorkedExample /></div>
+  </div>
+
   <section class="section" aria-labelledby="how-h">
     <div class="wrap">
       <div class="section-head">
         <p class="eyebrow">How we work</p>
-        <h2 id="how-h">Four stages, the same on every project</h2>
-        <p class="muted">Whether you buy a single article or a monthly retainer, the work follows the same pattern, and you know which stage you are in. <a href="/our-approach/">Read our full approach</a>.</p>
+        <h2 id="how-h">Four stages, each with a clear output</h2>
+        <p class="muted">A single article or a monthly retainer follows the same pattern, so you always know what comes next. <a href="/our-approach/">Read our full approach</a>.</p>
       </div>
       <Process steps={[
-        { title: "Discovery", body: "A short intake, the access the package needs and a recorded starting point." },
-        { title: "Strategy", body: "Priorities, sequencing and acceptance criteria agreed in writing before delivery starts." },
-        { title: "Execution", body: "Delivery within the stated scope, with work shared for approval at the agreed points." },
-        { title: "Reporting", body: "A handover, change log or monthly report showing what was done and what comes next." },
+        { title: "Discovery", body: "A short intake, the access the package needs and a recorded starting point.", output: "Agreed brief" },
+        { title: "Strategy", body: "Priorities, sequencing and acceptance criteria agreed in writing before delivery starts.", output: "Prioritised plan" },
+        { title: "Execution", body: "Delivery within the stated scope, shared for approval at the agreed points.", output: "Scoped implementation" },
+        { title: "Reporting", body: "What was done, the evidence behind it and what comes next.", output: "Handover or report" },
       ]} />
     </div>
   </section>
@@ -128,22 +130,25 @@ const schema = [
           <p class="eyebrow">Where to start</p>
           <h2 id="paths-h">Three common starting points</h2>
         </div>
-        <p>Not sure which package fits? These are the usual first steps. Every price is in US dollars and every package page lists its full scope and exclusions.</p>
+        <p>All prices in US dollars (USD). Each package page lists the full scope and exclusions.</p>
       </div>
       <div class="paths">
         {paths.map((path) => (
-          <section class="path" aria-label={path.title}>
-            <h3>{path.title}</h3>
-            <p class="muted">{path.body}</p>
-            <ul>
+          <section class="path" aria-labelledby={`path-${path.slug}`}>
+            <div class="path__head">
+              <span class="path__motif" aria-hidden="true"><ServiceArt slug={path.slug} /></span>
+              <div>
+                <h3 id={`path-${path.slug}`}>{path.title}</h3>
+                <p>{path.body}</p>
+              </div>
+            </div>
+            <ul class="path__rows">
               {path.ids.map((id) => {
                 const p = byId(id);
                 return (
                   <li>
-                    <a href={linkTo(id)}>
-                      <span class="path__name">{p.name}</span>
-                      <span class="path__row"><ClassChip pkg={p} /><Price pkg={p} /></span>
-                    </a>
+                    <a href={linkTo(id)}><span class="path__name">{p.name}</span><span class="path__type">{classLabel[p.classification]}</span></a>
+                    <Price pkg={p} currency={false} />
                   </li>
                 );
               })}
@@ -159,20 +164,18 @@ const schema = [
     <div class="wrap founder__grid">
       <div>
         <p class="eyebrow">Founder-led</p>
-        <h2 id="founder-h">You work with the person accountable for delivery</h2>
-        <p>SEO Booster is led by {site.founder}. Zain scopes every project, is accountable for delivery and brings in vetted specialists where the work needs them, for example a native-language reviewer or a platform-specific ads specialist.</p>
-        <p>That keeps communication direct and the scope honest: if something is outside what we can deliver well, we will say so before you pay.</p>
+        <h2 id="founder-h">You work directly with the person accountable for delivery</h2>
+        <p>SEO Booster is led by {site.founder}. Zain scopes each project, stays accountable for delivery and brings in vetted specialists where the work needs them, such as a native-language reviewer or a platform-specific ads specialist.</p>
+        <ul class="founder__points">
+          <li><strong>Agreed scope</strong> What is included, excluded and needed from you is written down before work starts.</li>
+          <li><strong>Direct accountability</strong> One lead from first conversation to final handover.</li>
+          <li><strong>Visible progress</strong> Work is shared at agreed points and every package ends with defined evidence.</li>
+          <li><strong>Explicit third-party costs</strong> Ad spend, licences and publisher fees are yours to approve, never added silently.</li>
+        </ul>
         <a class="btn btn--lime" href="/about/">About SEO Booster</a>
       </div>
-      <div class="founder__panel">
-        <h3>What we will not do</h3>
-        <ul class="nots">
-          <li>Promise rankings, traffic, AI citations, revenue or map positions</li>
-          <li>Sell bought likes, views, followers or reviews</li>
-          <li>Present paid links as editorial endorsements</li>
-          <li>Add third-party costs without your approval</li>
-          <li>Hold your funds or claim ownership of your store or ad accounts</li>
-        </ul>
+      <div class="founder__art" aria-hidden="true">
+        <BrandArt />
       </div>
     </div>
   </section>
@@ -190,7 +193,7 @@ const schema = [
 
   <section class="cta-wrap" aria-labelledby="cta-h">
     <div class="wrap">
-      <div class="cta dark">
+      <div class="cta field-cobalt">
         <div>
           <h2 id="cta-h">Tell us what you want to improve</h2>
           <p>Share your website, the service or package you are interested in and what a good result looks like. You will get an honest view of whether we can help and what it would involve.</p>
@@ -202,73 +205,80 @@ const schema = [
 </Base>
 
 <style>
-  .hero { padding-block: clamp(48px, 6vw, 96px) clamp(64px, 7vw, 112px); }
-  .hero__grid { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr); gap: clamp(40px, 5vw, 80px); align-items: center; }
-  .hero h1 { max-width: 14ch; }
-  .hero .lead { margin-bottom: 32px; }
-  .hero__facts { list-style: none; margin: 40px 0 0; padding: 24px 0 0; border-top: 1px solid var(--border); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; font-size: 0.92rem; color: var(--slate); line-height: 1.4; }
-  .hero__facts strong { display: block; font: 700 1.75rem/1 var(--font-head); color: var(--ink); margin-bottom: 6px; }
-  @media (max-width: 960px) { .hero__grid { grid-template-columns: 1fr; } }
-  @media (max-width: 480px) { .hero__facts { grid-template-columns: 1fr; gap: 14px; } .hero__facts li { display: flex; align-items: baseline; gap: 12px; } .hero__facts strong { font-size: 1.4rem; margin: 0; min-width: 1.6em; } }
+  /* Hero */
+  .hero { padding-block: clamp(48px, 6vw, 88px) clamp(48px, 6vw, 96px); overflow: hidden; }
+  .hero__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
+  .hero h1 { max-width: 16ch; color: var(--white); }
+  .uline { text-decoration: underline; text-decoration-color: var(--lime); text-decoration-thickness: 0.12em; text-underline-offset: 0.14em; text-decoration-skip-ink: none; }
+  .hero__lead { font-size: var(--fs-lead); line-height: 1.55; color: #dfe7f8; max-width: 44ch; margin-bottom: 32px; }
+  .eyebrow--dark { color: #c9d6f2; }
+  .hero__art { margin-right: calc(-1 * var(--gutter) / 2); }
+  @media (max-width: 900px) {
+    .hero__grid { grid-template-columns: 1fr; }
+    .hero__art { max-width: 520px; margin: 8px auto -24px; width: 100%; aspect-ratio: 800 / 460; overflow: hidden; }
+    .hero__art :global(svg) { margin-top: -6%; }
+  }
 
-  .serp { margin: 0; background: var(--white); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow); padding: 24px; }
-  .serp__query { display: flex; align-items: center; gap: 10px; border: 1px solid var(--border); border-radius: 999px; padding: 10px 16px; color: var(--slate); font-size: 0.95rem; margin-bottom: 22px; }
-  .serp__query svg { flex: none; }
-  .serp__hit { padding: 16px; margin: 0 -16px; border-radius: 12px; background: #fbfdf2; box-shadow: inset 0 0 0 1.5px var(--lime); }
-  .serp__url { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #3b4a5f; margin: 0 0 4px; overflow-wrap: anywhere; }
-  .serp__dot { width: 18px; height: 18px; flex: none; border-radius: 50%; background: var(--paper); border: 1px solid var(--border); }
-  .serp__title { font: 500 1.1rem/1.3 var(--font-body); color: #1a3fb3; margin: 0 0 6px; }
-  .serp__desc { font-size: 0.9rem; color: var(--slate); margin: 0; line-height: 1.5; }
-  .serp__notes { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 12px; font-size: 0.92rem; color: var(--slate); }
-  .serp__notes li { display: grid; grid-template-columns: 5.2em 1fr; gap: 12px; align-items: start; }
-  .tag { display: inline-flex; justify-content: center; font: 600 0.72rem/1 var(--font-body); letter-spacing: 0.05em; text-transform: uppercase; background: var(--ink); color: var(--lime); padding: 6px 8px; border-radius: 6px; }
-  .serp figcaption { margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--border); font-size: 0.8rem; color: var(--slate); }
+  /* Proof strip */
+  .strip { background: var(--white); border-bottom: 1px solid var(--border); }
+  .strip__list { list-style: none; margin: 0 auto; padding: 22px 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .strip__list li { display: flex; flex-direction: column; gap: 2px; padding-left: 18px; border-left: 3px solid var(--lime); }
+  .strip__list strong { font: 700 1.1rem/1.3 var(--font-head); }
+  .strip__list span { color: var(--slate); font-size: 0.95rem; }
+  @media (max-width: 700px) { .strip__list { grid-template-columns: 1fr; gap: 14px; } }
 
-  .families { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-  .fam { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 28px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--white); color: var(--ink); text-decoration: none; transition: border-color .15s ease, transform .15s ease; }
-  .fam:hover { border-color: var(--blue); color: var(--ink); text-decoration: none; }
-  .fam h3 { margin: 4px 0 0; font-size: 1.3rem; }
-  .fam p { color: var(--slate); margin: 0; font-size: 0.98rem; }
-  .fam .link-arrow { margin-top: auto; padding-top: 8px; color: var(--blue); }
-  .fam__meta { display: flex; justify-content: space-between; gap: 12px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.03em; color: var(--slate); }
-  .fam--seo { grid-column: 1; grid-row: 1 / span 3; padding: 40px; border-color: var(--ink); background: var(--ink) linear-gradient(160deg, var(--ink) 55%, var(--ink-2)); }
-  .fam--seo:hover { border-color: var(--lime); color: var(--white); }
-  .fam--seo h3 { font-size: 2rem; margin-top: 16px; }
-  .fam--seo p { color: var(--text-on-dark); font-size: 1.02rem; }
-  .fam--seo .fam__meta { color: var(--muted-on-dark); }
-  .fam--seo ul { list-style: none; margin: 18px 0 8px; padding: 18px 0 0; border-top: 1px solid var(--border-dark); display: grid; gap: 10px; color: var(--white); font-size: 0.97rem; }
-  .fam--seo li { display: flex; gap: 10px; }
-  .fam--seo li::before { content: ""; flex: none; width: 10px; height: 10px; margin-top: 0.5em; border-radius: 3px; background: var(--lime); }
-  .fam--seo .link-arrow { color: var(--lime); }
-  @media (max-width: 1023px) { .families { grid-template-columns: repeat(2, minmax(0, 1fr)); } .fam--seo { grid-column: 1 / -1; grid-row: auto; } }
-  @media (max-width: 620px) { .families { grid-template-columns: 1fr; } .fam, .fam--seo { padding: 24px; } .fam--seo h3 { font-size: 1.6rem; } }
+  /* Services */
+  .seo-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr); gap: 32px; align-items: center; padding: clamp(28px, 4vw, 48px); background: var(--blue-tint); border: 1px solid #d5e0fb; border-radius: 20px; color: var(--ink); text-decoration: none; margin-bottom: 20px; transition: border-color .15s ease; }
+  .seo-card:hover { border-color: var(--blue); color: var(--ink); text-decoration: none; }
+  .seo-card h3 { font-size: clamp(1.6rem, 1.3rem + 1vw, 2.1rem); margin: 8px 0 10px; }
+  .seo-card p { color: #2b3b54; max-width: 52ch; }
+  .seo-card__meta { font-size: 0.85rem; font-weight: 600; color: var(--slate) !important; margin: 0; }
+  .seo-card ul { list-style: none; margin: 18px 0 22px; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; font-size: 0.97rem; }
+  .seo-card li { display: flex; gap: 10px; }
+  .seo-card li::before { content: ""; flex: none; width: 10px; height: 10px; margin-top: 0.5em; border-radius: 3px; background: var(--blue); }
+  .seo-card .link-arrow { color: var(--blue); }
+  .svc-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .svc { display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--border); border-radius: 18px; overflow: hidden; color: var(--ink); text-decoration: none; transition: border-color .15s ease; }
+  .svc:hover { border-color: var(--blue); color: var(--ink); text-decoration: none; }
+  .svc__art { background: var(--blue-tint); padding: 12px 24px 0; }
+  .svc__body { display: flex; flex-direction: column; flex: 1; padding: 22px 24px 24px; }
+  .svc h3 { margin-bottom: 8px; font-size: 1.25rem; }
+  .svc p { color: var(--slate); margin: 0 0 16px; font-size: 0.97rem; }
+  .svc__meta { margin: auto 0 0 !important; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 0.9rem !important; font-weight: 600; color: var(--ink) !important; }
+  .svc__meta .link-arrow { color: var(--blue); }
+  @media (max-width: 1023px) { .svc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .seo-card { grid-template-columns: 1fr; } .seo-card__art { max-width: 420px; order: -1; } }
+  @media (max-width: 620px) { .svc-grid { grid-template-columns: 1fr; } .seo-card ul { grid-template-columns: 1fr; } .svc__art { padding-inline: 48px; } }
 
-  .paths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-  .path { background: var(--paper); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
-  .path h3 { font-size: 1.3rem; margin-bottom: 8px; }
-  .path ul { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 10px; }
-  .path a { display: grid; gap: 8px; padding: 14px 16px; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); text-decoration: none; color: var(--ink); }
-  .path a:hover { border-color: var(--blue); }
+  /* Starting points: rows, no nested boxes */
+  .paths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 3vw, 48px); }
+  .path__head { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 14px; }
+  .path__motif { flex: none; width: 64px; border-radius: 12px; background: var(--blue-tint); overflow: hidden; }
+  .path h3 { font-size: 1.25rem; margin: 2px 0 6px; }
+  .path__head p { color: var(--slate); margin: 0; font-size: 0.95rem; }
+  .path__rows { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--ink); }
+  .path__rows li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .path__rows a { display: grid; gap: 2px; text-decoration: none; color: var(--ink); min-height: 44px; align-content: center; }
+  .path__rows a:hover .path__name { color: var(--blue); text-decoration: underline; }
   .path__name { font: 600 1rem/1.3 var(--font-head); }
-  .path__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
-  .paths__all { margin: 28px 0 0; }
+  .path__type { font-size: 0.82rem; color: var(--slate); }
+  .paths__all { margin: 32px 0 0; }
   @media (max-width: 960px) { .paths { grid-template-columns: 1fr; } }
 
-  .founder__grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: clamp(40px, 6vw, 96px); align-items: center; }
-  .founder p { max-width: 56ch; }
-  .founder .btn { margin-top: 12px; }
-  .founder__panel { border: 1px solid var(--border-dark); background: var(--ink-2); border-radius: var(--radius); padding: 32px; }
-  .founder__panel h3 { margin-bottom: 18px; }
-  .nots { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
-  .nots li { position: relative; padding-left: 30px; color: var(--text-on-dark); }
-  .nots li::before { content: ""; position: absolute; left: 0; top: 0.3em; width: 18px; height: 18px; border-radius: 5px; border: 1.5px solid var(--muted-on-dark); background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M5 5l6 6M11 5l-6 6' stroke='%23D9F76B' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") center/80% no-repeat; }
-  @media (max-width: 900px) { .founder__grid { grid-template-columns: 1fr; } .founder__panel { padding: 24px; } }
+  /* Founder */
+  .founder__grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: clamp(32px, 6vw, 96px); align-items: center; }
+  .founder p { max-width: 58ch; }
+  .founder__points { list-style: none; margin: 28px 0 32px; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 20px 32px; }
+  .founder__points li { color: var(--text-on-dark); font-size: 0.97rem; padding-top: 14px; border-top: 2px solid var(--lime); }
+  .founder__points strong { display: block; color: var(--white); font: 600 1.05rem/1.3 var(--font-head); margin-bottom: 4px; }
+  .founder__art { max-width: 360px; margin-inline: auto; width: 100%; }
+  @media (max-width: 900px) { .founder__grid { grid-template-columns: 1fr; } .founder__art { display: none; } }
+  @media (max-width: 560px) { .founder__points { grid-template-columns: 1fr; } }
 
   .faq-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(32px, 6vw, 96px); align-items: start; }
   @media (max-width: 900px) { .faq-grid { grid-template-columns: 1fr; } }
 
   .cta-wrap { padding-bottom: var(--section); }
-  .cta { border-radius: 24px; padding: clamp(32px, 5vw, 64px); display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; background: var(--ink) radial-gradient(120% 140% at 100% 100%, #213a6b 0%, transparent 55%); }
-  .cta p { color: var(--text-on-dark); max-width: 60ch; margin: 0; }
+  .cta { border-radius: 24px; padding: clamp(32px, 5vw, 64px); display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
+  .cta p { color: #dfe7f8; max-width: 60ch; margin: 0; }
   @media (max-width: 760px) { .cta { grid-template-columns: 1fr; } .cta .btn { width: 100%; } }
 </style>

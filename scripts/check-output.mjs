@@ -44,7 +44,8 @@ export function checkOutput(dir, { release = false } = {}) {
     if (release) {
       if (/noindex/.test(html) && !rel.endsWith("404.html")) errors.push(`${rel}: noindex in release build`);
       if (/Preview build/.test(html)) errors.push(`${rel}: preview marker in release build`);
-      if (/localhost|PREVIEW/i.test(html.match(/<link rel="canonical" href="([^"]+)"/)?.[1] ?? "")) errors.push(`${rel}: preview canonical`);
+      const canon = html.match(/<link rel="canonical" href="([^"]+)"/)?.[1] ?? "";
+      if (/localhost|hostingersite\.com/i.test(canon) || /hostingersite\.com|localhost:/i.test(html)) errors.push(`${rel}: preview/local origin in release build`);
     }
   }
   return { pages: pages.length, errors };

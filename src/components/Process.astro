@@ -1,33 +1,56 @@
 ---
-interface Props { steps: { title: string; body: string }[]; dark?: boolean }
+// Four-stage process with a small icon and the named output of each stage.
+interface Step { title: string; body: string; output?: string }
+interface Props { steps: Step[]; dark?: boolean }
 const { steps, dark = false } = Astro.props;
+const defaults = ["Agreed brief", "Prioritised plan", "Scoped implementation", "Handover or report"];
+const icons = [
+  // brief
+  '<rect x="6" y="3" width="20" height="26" rx="3"/><path d="M11 10h10M11 15h10M11 20h6"/>',
+  // plan
+  '<path d="M5 8h4M5 16h4M5 24h4"/><path d="M13 8h14M13 16h10M13 24h7"/>',
+  // implementation
+  '<rect x="3" y="6" width="26" height="18" rx="3"/><path d="M3 11h26M12 17l-3 2 3 2M20 17l3 2-3 2"/>',
+  // report
+  '<rect x="4" y="4" width="24" height="24" rx="3"/><path d="M10 22v-5M16 22V11M22 22v-8"/>',
+];
 ---
 <ol class:list={["process", { "process--dark": dark }]}>
   {steps.map((s, i) => (
     <li>
-      <span class="num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+      <div class="process__top">
+        <span class="process__icon" aria-hidden="true"><svg viewBox="0 0 32 32" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" set:html={icons[i % 4]} /></span>
+        <span class="process__num">Stage {i + 1}</span>
+      </div>
       <h3>{s.title}</h3>
       <p>{s.body}</p>
+      <p class="process__out"><span>Output</span> {s.output ?? defaults[i]}</p>
     </li>
   ))}
 </ol>
 <style>
-  .process { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; counter-reset: s; position: relative; }
-  .process li { position: relative; padding: 0 24px 0 0; }
-  .process li::before { content: ""; display: block; height: 2px; background: var(--border); margin: 21px 0 24px 52px; }
-  .process li:last-child::before { background: linear-gradient(90deg, var(--border), transparent); }
-  .num { position: absolute; top: 0; left: 0; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--lime); color: var(--ink); font: 700 0.95rem/1 var(--font-head); }
+  .process { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; counter-reset: s; }
+  .process li { position: relative; display: flex; flex-direction: column; }
+  .process__top { position: relative; display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .process li:not(:last-child) .process__top::after { content: ""; flex: 1; height: 2px; margin-right: -24px; background: repeating-linear-gradient(90deg, var(--blue) 0 6px, transparent 6px 12px); opacity: 0.4; }
+  .process__icon { position: relative; z-index: 1; width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; background: var(--blue); color: var(--white); flex: none; }
+  .process__num { white-space: nowrap; font: 600 0.78rem/1 var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); }
   .process h3 { margin-bottom: 8px; }
-  .process p { color: var(--slate); margin: 0; font-size: 0.98rem; }
-  .process--dark li::before { background: var(--border-dark); }
-  .process--dark li:last-child::before { background: linear-gradient(90deg, var(--border-dark), transparent); }
+  .process p { color: var(--slate); margin: 0 0 16px; font-size: 0.98rem; }
+  .process__out { margin-top: auto !important; margin-bottom: 0 !important; display: inline-flex; align-self: flex-start; gap: 8px; align-items: center; padding: 6px 12px 6px 6px; border-radius: 999px; background: var(--white); border: 1px solid var(--border); color: var(--ink) !important; font-weight: 600; font-size: 0.9rem !important; }
+  .process__out span { background: var(--lime); border-radius: 999px; padding: 3px 8px; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; }
   .process--dark p { color: var(--text-on-dark); }
-  @media (max-width: 900px) {
-    .process { grid-template-columns: 1fr; gap: 28px; }
-    .process li { padding: 0 0 0 64px; min-height: 44px; }
-    .process li::before { display: none; }
-    .process li:not(:last-child)::after { content: ""; position: absolute; left: 21px; top: 52px; bottom: -22px; width: 2px; background: var(--border); }
-    .process--dark li:not(:last-child)::after { background: var(--border-dark); }
-    .num { top: -4px; }
+  .process--dark .process__num { color: var(--muted-on-dark); }
+  .process--dark .process__out { background: var(--ink-2); border-color: var(--border-dark); color: var(--white) !important; }
+  .process--dark .process__out span { color: var(--ink); }
+  @media (max-width: 960px) {
+    .process { grid-template-columns: 1fr; gap: 0; }
+    .process li { padding: 0 0 32px 72px; }
+    .process li:last-child { padding-bottom: 0; }
+    .process__top { position: absolute; left: 0; top: 0; margin: 0; }
+    .process__num { display: none; }
+    .process li:not(:last-child)::before { content: ""; position: absolute; left: 25px; top: 60px; bottom: 8px; width: 2px; background: repeating-linear-gradient(180deg, var(--blue) 0 6px, transparent 6px 12px); opacity: 0.35; }
+    .process li:not(:last-child) .process__top::after { display: none; }
+    .process h3 { margin-top: 12px; }
   }
 </style>

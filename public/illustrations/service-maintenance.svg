@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="320" cy="240" r="206" fill="#EEF3FF"/>
+  <!-- site panel -->
+  <rect x="120" y="112" width="300" height="220" rx="14" fill="#fff" stroke="#152541" stroke-width="3"/>
+  <path d="M120 148h300" stroke="#152541" stroke-width="3"/>
+  <circle cx="142" cy="130" r="5" fill="#152541"/><circle cx="160" cy="130" r="5" fill="#152541"/>
+  <rect x="144" y="170" width="120" height="16" rx="6" fill="#152541"/>
+  <path d="M144 206h200M144 226h170" stroke="#8FA2BF" stroke-width="3"/>
+  <g stroke="#152541" stroke-width="3">
+    <rect x="144" y="252" width="76" height="56" rx="8" fill="#EEF3FF"/>
+    <rect x="232" y="252" width="76" height="56" rx="8" fill="#EEF3FF"/>
+    <rect x="320" y="252" width="76" height="56" rx="8" fill="#EEF3FF"/>
+  </g>
+  <!-- update cycle -->
+  <circle cx="176" cy="352" r="58" fill="#fff" stroke="#152541" stroke-width="3"/>
+  <path d="M142 330a40 40 0 0 1 64-6" stroke="#2456E8" stroke-width="8"/>
+  <path d="M210 306l-2 22-22-4" stroke="#2456E8" stroke-width="8"/>
+  <path d="M210 374a40 40 0 0 1-64 6" stroke="#2456E8" stroke-width="8"/>
+  <path d="M142 398l2-22 22 4" stroke="#2456E8" stroke-width="8"/>
+  <!-- shield with check -->
+  <path d="M470 176l74 28v70c0 56-40 92-74 106-34-14-74-50-74-106v-70z" fill="#2456E8" stroke="#152541" stroke-width="3"/>
+  <path d="M470 206l48 18v50c0 38-26 62-48 72-22-10-48-34-48-72v-50z" fill="#fff" stroke="#152541" stroke-width="3"/>
+  <path d="M446 278l18 18 34-38" stroke="#152541" stroke-width="12"/>
+  <path d="M446 278l18 18 34-38" stroke="#D9F76B" stroke-width="6"/>
+</svg>

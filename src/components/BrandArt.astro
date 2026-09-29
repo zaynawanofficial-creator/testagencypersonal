@@ -1,0 +1,17 @@
+---
+// Small abstract brand illustration: a lime path linking four stages. Decorative.
+interface Props { tone?: "dark" | "light" }
+const { tone = "dark" } = Astro.props;
+const ring = tone === "dark" ? "#2d4270" : "#cdd9f5";
+const node = tone === "dark" ? "#152541" : "#ffffff";
+---
+<svg class="brand-art" viewBox="0 0 400 400" fill="none" aria-hidden="true" focusable="false">
+  <circle cx="200" cy="200" r="170" stroke={ring} stroke-width="2" />
+  <circle cx="200" cy="200" r="110" stroke={ring} stroke-width="2" stroke-dasharray="4 10" />
+  <path d="M70 250 C 120 150, 170 290, 220 190 S 310 120, 330 150" stroke={tone === "dark" ? "#d9f76b" : "#2456e8"} stroke-width="6" stroke-linecap="round" />
+  <circle cx="70" cy="250" r="14" fill="#2456e8" stroke={node} stroke-width="4" />
+  <circle cx="160" cy="232" r="14" fill="#2456e8" stroke={node} stroke-width="4" />
+  <circle cx="238" cy="170" r="14" fill="#2456e8" stroke={node} stroke-width="4" />
+  <circle cx="330" cy="150" r="22" fill="#d9f76b" stroke="#152541" stroke-width="4" />
+</svg>
+<style>.brand-art { width: 100%; height: auto; display: block; }</style>

@@ -1,11 +1,11 @@
 ---
 import type { Package } from "../data/catalogue";
-interface Props { pkg: Package; size?: "sm" | "lg" }
-const { pkg, size = "sm" } = Astro.props;
+interface Props { pkg: Package; size?: "sm" | "lg"; currency?: boolean }
+const { pkg, size = "sm", currency = true } = Astro.props;
 ---
 <span class:list={["price", `price--${size}`]}>
   <span class="price__amount">{pkg.displayPrice}</span>
-  <abbr class="price__cur" title="US dollars">USD</abbr>
+  {currency && <abbr class="price__cur" title="US dollars">USD</abbr>}
 </span>
 <style>
   .price { display: inline-flex; align-items: baseline; flex-wrap: wrap; gap: 6px; font-family: var(--font-head); font-weight: 700; color: var(--ink); }

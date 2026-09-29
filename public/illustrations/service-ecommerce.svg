@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="44" y="64" width="552" height="352" rx="48" fill="#EEF3FF"/>
+  <!-- product grid -->
+  <g stroke="#152541" stroke-width="3">
+    <rect x="84" y="100" width="100" height="120" rx="12" fill="#fff"/>
+    <rect x="198" y="100" width="100" height="120" rx="12" fill="#fff"/>
+    <rect x="84" y="236" width="100" height="120" rx="12" fill="#fff"/>
+    <rect x="198" y="236" width="100" height="120" rx="12" fill="#fff"/>
+    <rect x="98" y="114" width="72" height="56" rx="8" fill="#EEF3FF"/>
+    <rect x="212" y="114" width="72" height="56" rx="8" fill="#2456E8"/>
+    <rect x="98" y="250" width="72" height="56" rx="8" fill="#2456E8"/>
+    <rect x="212" y="250" width="72" height="56" rx="8" fill="#EEF3FF"/>
+  </g>
+  <path d="M98 186h52M212 186h52M98 322h52M212 322h52M98 202h32M212 202h32M98 338h32M212 338h32" stroke="#8FA2BF" stroke-width="3"/>
+  <!-- product detail -->
+  <rect x="322" y="92" width="170" height="280" rx="16" fill="#fff" stroke="#152541" stroke-width="3"/>
+  <rect x="340" y="110" width="134" height="110" rx="10" fill="#2456E8" stroke="#152541" stroke-width="3"/>
+  <path d="M372 190l28-34 22 24 14-14 20 24z" fill="#fff" stroke="#152541" stroke-width="3"/>
+  <rect x="340" y="236" width="110" height="14" rx="5" fill="#152541"/>
+  <path d="M340 266h120M340 284h90" stroke="#8FA2BF" stroke-width="3"/>
+  <rect x="340" y="310" width="134" height="40" rx="20" fill="#D9F76B" stroke="#152541" stroke-width="3"/>
+  <path d="M396 330h22M407 319v22" stroke="#152541" stroke-width="3"/>
+  <!-- order / fulfilment tiles -->
+  <g stroke="#152541" stroke-width="3">
+    <rect x="508" y="120" width="72" height="72" rx="14" fill="#fff"/>
+    <path d="M524 146l20-10 20 10v26l-20 10-20-10zM524 146l20 10 20-10M544 156v26"/>
+    <rect x="508" y="208" width="72" height="72" rx="14" fill="#fff"/>
+    <path d="M526 244l12 12 24-26"/>
+    <rect x="508" y="296" width="72" height="72" rx="14" fill="#fff"/>
+    <path d="M522 322h44M522 336h30M522 350h38" stroke="#8FA2BF"/>
+  </g>
+</svg>

@@ -1,0 +1,61 @@
+---
+// Illustrative worked example: fictional store, not client results. All labels are HTML text.
+interface Props { headingLevel?: "h2" | "h3"; id?: string }
+const { headingLevel = "h2", id = "example" } = Astro.props;
+const H = headingLevel;
+const notes = [
+  { t: "Search intent", d: "The searcher wants one specific product, not a category page. The best answer is a product page built around that exact need." },
+  { t: "Useful copy", d: "The title uses the buyer's own words and a real reason to click. The description answers the next question before it is asked." },
+  { t: "Relevant detail", d: "Material, dimensions, card slots and returns are specific and checkable. Detail like this helps buyers and search engines understand the page." },
+];
+---
+<section class="ex" aria-labelledby={`${id}-h`}>
+  <div class="ex__intro">
+    <p class="eyebrow">What the work looks like</p>
+    <H id={`${id}-h`} class="ex__title">One product page, improved for the way people search</H>
+    <p class="ex__label"><strong>Illustrative example</strong> — fictional store, not client results.</p>
+  </div>
+  <div class="ex__grid">
+    <div class="ex__visual">
+      <img class="ex__product" src="/illustrations/example-wallet.svg" width="640" height="480" loading="lazy" decoding="async" alt="Illustration of a tan leather bifold wallet, open, with card slots on the left and a zipped coin pocket on the right (fictional product)." />
+      <div class="ex__serp" aria-label="Simplified search result preview">
+        <p class="ex__query"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>handmade leather wallet with coin pocket</p>
+        <p class="ex__url">example-leathergoods.com › wallets › coin-pocket <span class="mk" aria-hidden="true">1</span></p>
+        <p class="ex__t">Handmade Leather Wallet with Coin Pocket · 30-Day Returns <span class="mk" aria-hidden="true">2</span></p>
+        <p class="ex__d">Full-grain leather, hand-stitched, 8 card slots and a zipped coin pocket. 11 × 9.5 cm. Ships worldwide. <span class="mk" aria-hidden="true">3</span></p>
+      </div>
+    </div>
+    <ol class="ex__notes">
+      {notes.map((n, i) => (
+        <li><span class="mk mk--lg" aria-hidden="true">{i + 1}</span><div><h3>{n.t}</h3><p>{n.d}</p></div></li>
+      ))}
+    </ol>
+  </div>
+</section>
+<style>
+  .ex__intro { max-width: 62ch; margin-bottom: 32px; }
+  .ex__title { font-size: var(--fs-h2); }
+  .ex__label { display: inline-block; margin: 0; padding: 8px 14px; border-radius: 999px; background: var(--white); border: 1px solid var(--border); font-size: 0.92rem; color: var(--slate); }
+  .ex__label strong { color: var(--ink); }
+  .ex__grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .ex__visual { position: relative; padding-bottom: 72px; }
+  .ex__product { width: 88%; height: auto; border-radius: 20px; box-shadow: var(--shadow); }
+  .ex__serp { position: absolute; right: 0; bottom: 0; width: min(420px, 78%); background: var(--white); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow); padding: 18px 20px; }
+  .ex__serp p { margin: 0; }
+  .ex__query { display: flex; gap: 8px; align-items: center; font-size: 0.85rem; color: var(--slate); border: 1px solid var(--border); border-radius: 999px; padding: 6px 12px; margin-bottom: 12px !important; }
+  .ex__url { font-size: 0.78rem; color: #3b4a5f; overflow-wrap: anywhere; }
+  .ex__t { font: 500 1.02rem/1.3 var(--font-body); color: #1a3fb3; margin: 4px 0 !important; }
+  .ex__d { font-size: 0.86rem; color: var(--slate); line-height: 1.5; }
+  .mk { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--lime); color: var(--ink); font: 700 0.72rem/1 var(--font-head); vertical-align: 1px; margin-left: 4px; }
+  .mk--lg { width: 36px; height: 36px; font-size: 0.95rem; margin: 0; flex: none; }
+  .ex__notes { list-style: none; margin: 0; padding: 0; display: grid; gap: 28px; }
+  .ex__notes li { display: flex; gap: 18px; align-items: flex-start; }
+  .ex__notes h3 { margin: 4px 0 6px; font-size: 1.2rem; }
+  .ex__notes p { margin: 0; color: var(--slate); }
+  @media (max-width: 900px) {
+    .ex__grid { grid-template-columns: 1fr; }
+    .ex__product { width: 100%; }
+    .ex__visual { padding-bottom: 0; }
+    .ex__serp { position: relative; width: auto; margin: -40px 12px 0; }
+  }
+</style>

@@ -1,11 +1,14 @@
 // @ts-check
 import { defineConfig } from "astro/config";
+import { readFileSync } from "node:fs";
+
+const deploy = JSON.parse(readFileSync(new URL("./deploy.json", import.meta.url), "utf8"));
 
 // Environment strategy (see docs/DECISIONS.md, D-07):
-//   SITE_MODE=preview (default) -> noindex everywhere, canonicals point at the preview origin.
+//   SITE_MODE=preview (default) -> noindex everywhere, canonicals point at the preview origin (deploy.json).
 //   SITE_MODE=release           -> indexable, canonicals point at https://seobooster.uk. Only via scripts/release.mjs.
 const mode = process.env.SITE_MODE === "release" ? "release" : "preview";
-const site = mode === "release" ? "https://seobooster.uk" : process.env.PREVIEW_ORIGIN || "http://localhost:4321";
+const site = mode === "release" ? deploy.releaseOrigin : process.env.PREVIEW_ORIGIN || deploy.previewOrigin;
 
 export default defineConfig({
   site,

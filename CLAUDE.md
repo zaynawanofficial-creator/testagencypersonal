@@ -14,11 +14,12 @@ Astro static site (no WordPress, no React app, no database, no runtime server). 
 - `src/data/families.ts`: seven service families: copy, package grouping (every package exactly once, checked at build), FAQs.
 - `src/data/business.json`: launch-gated operational values (public email, phone, logo, policies, Insights visibility). `null`/`false` = not confirmed.
 - `src/data/site.ts`: business configuration and the preview/release mode.
-- `src/components/`: Header (with mobile drawer), Footer, Logo, PackageComparison, PackageDetails, Price, ClassChip, Process, Faq, EnquiryForm, Breadcrumbs.
+- `src/components/`: Header (with mobile drawer), Footer, Logo, HeroArt, ServiceArt, BrandArt, WorkedExample, DeliverablePreview, PackageComparison, PackageDetails, Price, ClassChip, Process, Faq, EnquiryForm, Breadcrumbs.
+- `public/illustrations/`: original service SVGs; `public/og-default.jpg` from `scripts/make-og.mjs`. Asset provenance: `docs/ASSETS.md`.
 
 ## Environment boundaries (never cross without explicit approval)
 - **Do not touch** `seobooster.uk` (production WordPress on Hostinger), `staging.seobooster.uk`, DNS, email routing, or any other Hostinger site (shopvious.com, iamfamous.uk, rankrightmedia.online, buyfollowerssingapore.com).
-- No temporary static Hostinger site exists yet (checked 28 Sep 2026). Creating one needs approval.
+- **Preview:** https://coral-grouse-990787.hostingersite.com (Hostinger, Git auto-deploy from `claude/seobooster-uk-website-m55o9k`). **Every push deploys the preview.** Push only verified commits. The preview origin is in `deploy.json`.
 - No live payments. Commerce is `not-activated` for all packages.
 
 ## Commands
