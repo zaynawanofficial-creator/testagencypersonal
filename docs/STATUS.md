@@ -18,7 +18,7 @@ Updated 29 Sep 2026. Branch `claude/seobooster-uk-website-m55o9k`. See the commi
 - **Built:** yes (13 pages). **Saved:** committed and pushed. **Deployed:** to the preview only (auto-deploy on push; verify the latest build in Hostinger). Production NOT deployed. **Tested:** locally in Chromium (docs/QA.md); deployed pages NOT browser-tested from here. **Approved:** NO.
 
 ## Route change (1 Nov 2026)
-Owner chose the WordPress + WooCommerce route (D-26). Next: discovery on `staging.seobooster.uk` (phase 01 of the build kit) once the Elementor MCP can connect. Blocked by the network policy (seobooster.uk domains not allowed) and by the choice of staging vs production endpoint.
+Owner chose the WordPress + WooCommerce route (D-26). Next: discovery on production `seobooster.uk` via the Elementor MCP (owner's choice, D-28), phase 01 of the build kit. Blocked only by the network policy: seobooster.uk is not an allowed domain in this environment.
 
 ## Deployments
 | Date | Commit | Hostinger build | Result |
