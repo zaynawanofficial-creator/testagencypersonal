@@ -20,5 +20,12 @@ Verification: all 50 read back and compared with `src/data/catalogue.json` (name
 ## Observed during the batch (not made by Claude)
 A WoodMart **corporate-2 demo import** ran on production during this session: front page set to "Home Corporate-2" (7339); pages About us, Contact us, Blog, Portfolio, Wishlist, Compare, Shop (47); 9 demo blog posts; 10 menus; about 300 media items; **12 published demo products** (furniture, IDs 232–411). Site still indexable. Demo content must be replaced or removed before launch.
 
-## Pending
-- Discourage search engines (Settings → Reading): not exposed by the REST API; owner or woodmart MCP.
+## 2 Nov 2026: second batch (owner approval in chat)
+| # | Change | Before | After | How to reverse |
+|---|---|---|---|---|
+| 10 | Discourage search engines (Settings → Reading), **done by the owner** | indexable | front end serves `noindex, nofollow` (verified) | Untick at launch |
+| 11 | 12 WoodMart demo products binned (IDs 411, 395, 381, 372, 361, 344, 334, 323, 312, 300, 270, 232) | published | trash | Products → Trash → Restore |
+| 12 | 9 demo blog posts binned (IDs 465, 456, 447, 438, 429, 188, 180, 160, 35220) | published | trash | Posts → Trash → Restore |
+| 13 | Server and CDN cache cleared again | | cleared | n/a |
+
+State after: 50 products (all SB drafts), 0 published posts. Demo pages, menus and media remain (to be replaced during the build).
