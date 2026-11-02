@@ -17,8 +17,13 @@ Updated 29 Sep 2026. Branch `claude/seobooster-uk-website-m55o9k`. See the commi
 ## States
 - **Built:** yes (13 pages). **Saved:** committed and pushed. **Deployed:** to the preview only (auto-deploy on push; verify the latest build in Hostinger). Production NOT deployed. **Tested:** locally in Chromium (docs/QA.md); deployed pages NOT browser-tested from here. **Approved:** NO.
 
-## Route change (1 Nov 2026)
-Owner chose the WordPress + WooCommerce route (D-26). Next: discovery on production `seobooster.uk` via the Elementor MCP (owner's choice, D-28), phase 01 of the build kit. Blocked only by the network policy: seobooster.uk is not an allowed domain in this environment.
+## WordPress route: resume here (updated 2 Nov 2026)
+Active work is on **production `seobooster.uk`** (owner's choice, D-28), WoodMart blocks only (D-30), hidden from search engines (D-31).
+- Done: discovery (`docs/wordpress/DISCOVERY.md`); approved batches 1–2 (`docs/wordpress/CHANGELOG.md`): timezone, comments, currency USD, 50 catalogue products as drafts (`scripts/wp/seed-products.py`), demo products/posts binned, noindex on.
+- Live state: WoodMart corporate-2 demo pages, menus and media still in place; 50 SB draft products; no payment gateway; no policies published.
+- Tools: MCP servers `seo-booster-elementor` (Elementor) and `woodmart` (`@automattic/mcp-wordpress-remote` → MCP Adapter) in `~/.claude.json`; skill `woodmart-mcp` in `~/.claude/skills/`. **These live in the container, not the repo**: a fresh container needs them re-added (see D-27, D-29). REST writes use the same admin app password.
+- **Next:** (1) `woodmart` MCP: discover abilities, read theme settings; (2) apply brand tokens in WoodMart theme settings (navy #152541, blue #2456E8, lime #D9F76B, paper #FAF9F6, Manrope/Inter); (3) replace demo Home/About/Contact with SEO Booster content from the Astro build (`src/pages`, `src/data/families.ts`); (4) service pages with the package groups; (5) 301 redirects from `docs/URL-MAP.csv`; (6) policies, lead inbox, payment gateway (owner inputs).
+- Rules: log every production write in `CHANGELOG.md` with its before value; clear the Hostinger cache after visible changes; publishing or URL changes need owner confirmation.
 
 ## Deployments
 | Date | Commit | Hostinger build | Result |
