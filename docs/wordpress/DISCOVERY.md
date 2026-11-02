@@ -1,6 +1,6 @@
 # WordPress route: discovery (phase 01, in progress)
 
-Started 2 Nov 2026. Source: Hostinger API (read-only). The Elementor MCP endpoint was **not reachable**: the environment's network policy blocks `seobooster.uk` (proxy 403), so no page, product or settings data has been read from WordPress itself yet.
+Started 2 Nov 2026. Sources: Hostinger API, then (once the network allowed it) the Elementor MCP and the WP/WooCommerce REST API, all **read-only**. No production writes have been made.
 
 ## Target (owner decision D-28)
 Production `https://seobooster.uk`, WordPress install id 31317219, account u655401359. Staging copy exists at `staging.seobooster.uk` (id 31348747, created 30 Oct 2026) but the owner chose production.
@@ -22,15 +22,24 @@ Production `https://seobooster.uk`, WordPress install id 31317219, account u6554
 | Themes Twenty Twenty-Three/Four/Five | | inactive | Keep one default theme as a fallback |
 No known vulnerabilities reported for any plugin or theme.
 
+## Live site state (read 2 Nov 2026 via MCP + REST)
+- **Fresh install** (28 Oct 2026). WP 7.1.4, PHP 8.5.12, MariaDB 11.8, LiteSpeed, `wp_environment_type=production`, WooCommerce 11.2.1.
+- **Content:** pages = Shop, Cart, Checkout, My account (WooCommerce defaults, 1 Nov); Privacy Policy and Refund and Returns Policy are drafts. Posts = "Hello world!" only. **Products: 0.** Menus: none (WoodMart locations `main-menu`, `mobile-menu` unassigned). Homepage = latest posts.
+- **Elementor kit:** no global variables, no global classes, no components; Elementor Pro absent (component creation and site parts unavailable via MCP; header/footer would come from the WoodMart header builder, which the MCP cannot edit). Media library: only the WooCommerce placeholder (no logo).
+- **WooCommerce settings:** currency USD; store country **US:CA (default, not real)**; store address empty; taxes off; coupons on; guest checkout on; account registration off. Payment gateways: only BACS, cheque and COD, **all disabled**.
+- **Site settings:** title "SEO Booster", tagline empty, timezone empty (UTC), comments open by default, admin email accounts@seobooster.uk, one user (`admin`, administrator).
+- **Search visibility: indexable.** robots.txt allows crawling, there is no noindex meta, and `wp-sitemap.xml` is published, including a **users sitemap that exposes the `admin` username**.
+- **Legacy URLs:** all 23 legacy URLs in `docs/URL-MAP.csv` now return **404** (only `/` returns 200). Any search equity on them is being lost until redirects exist.
+
 ## Early conclusions
 - The kit allows continuing existing WoodMart + Elementor work. Recommended: **keep WooCommerce + WoodMart + Elementor** and do not add a block theme or a second page builder (avoids the conflicting-builder risk the kit warns about).
 - Reuse from the Astro project: the approved 50-package catalogue (`src/data/catalogue.json`), copy, tokens, SVG illustrations, and the honesty rules.
 - Backups: the Hostinger API does not list backups for this hosting type. **Confirm a current backup in hPanel before the first production write.**
 
 ## Blockers
-1. Network: allow `seobooster.uk` in the environment's Network access settings, then start a new session.
-2. Backup confirmation for production (hPanel).
+1. ~~Network~~: resolved 2 Nov 2026 (MCP and REST reachable).
+2. Backup confirmation for production (hPanel) before the first write.
 3. From the kit's DECISIONS list: payment gateway/processor for the seller (Zain Ul Abedeen trading as SEO Booster) in USD; tax setup; refund/terms approval; lead inbox.
 
-## Next (once the MCP connects, read-only first)
+## Next
 Inventory pages, templates, menus, WooCommerce products/settings and Elementor kit; map the existing content against the approved catalogue; then write ARCHITECTURE.md, DATA_MODEL.md, ROUTES.md, RISKS.md, BUILD_PLAN.md per phase 01.
