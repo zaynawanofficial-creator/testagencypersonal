@@ -31,6 +31,8 @@ No known vulnerabilities reported for any plugin or theme.
 - **Search visibility: indexable.** robots.txt allows crawling, there is no noindex meta, and `wp-sitemap.xml` is published, including a **users sitemap that exposes the `admin` username**.
 - **Legacy URLs:** all 23 legacy URLs in `docs/URL-MAP.csv` now return **404** (only `/` returns 200). Any search equity on them is being lost until redirects exist.
 
+See `CHANGELOG.md` for production writes from 2 Nov 2026 onward. The site was reinstalled and the WoodMart corporate-2 demo imported on 2 Nov, so parts of the state above are superseded: plugins are now AI, CF7, Elementor, MCP Adapter, Safe SVG, WooCommerce, Woodmart Core, WoodMart Images Optimizer and WoodMart MCP 1.0.2.
+
 ## Early conclusions
 - The kit allows continuing existing WoodMart + Elementor work. Recommended: **keep WooCommerce + WoodMart + Elementor** and do not add a block theme or a second page builder (avoids the conflicting-builder risk the kit warns about).
 - Reuse from the Astro project: the approved 50-package catalogue (`src/data/catalogue.json`), copy, tokens, SVG illustrations, and the honesty rules.
